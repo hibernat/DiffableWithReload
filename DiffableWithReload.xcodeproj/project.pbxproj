@@ -24,6 +24,7 @@
 		A0EE1F4F25DEC4470065BFDD /* DiffableWithReload.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0EE1F2025DEC3010065BFDD /* DiffableWithReload.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0EE1F5525DEC6120065BFDD /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F5425DEC6120065BFDD /* Car.swift */; };
 		A0EE1F5925DEC89C0065BFDD /* Motorcycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F5825DEC89C0065BFDD /* Motorcycle.swift */; };
+		A0FCE33825EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FCE33725EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		A0EE1F4925DEC4200065BFDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0EE1F5425DEC6120065BFDD /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
 		A0EE1F5825DEC89C0065BFDD /* Motorcycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Motorcycle.swift; sourceTree = "<group>"; };
+		A0FCE33725EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDiffableReloadingDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				A069C73725E506E9006BF686 /* CellContentObject.swift */,
 				A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */,
 				A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */,
+				A0FCE33725EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift */,
 				A0EE1F2425DEC3010065BFDD /* Info.plist */,
 			);
 			path = DiffableWithReload;
@@ -286,6 +289,7 @@
 			files = (
 				A069C73825E506E9006BF686 /* CellContentObject.swift in Sources */,
 				A0EE1F2E25DEC37A0065BFDD /* EncodableContent.swift in Sources */,
+				A0FCE33825EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift in Sources */,
 				A069C73A25E50707006BF686 /* ItemsReloadSupporting.swift in Sources */,
 				A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */,
 				A0EE1F2C25DEC3710065BFDD /* HashableContent.swift in Sources */,
