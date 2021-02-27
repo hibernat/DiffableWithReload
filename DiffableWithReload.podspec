@@ -23,6 +23,8 @@ Pod::Spec.new do |spec|
   # spec.osx.deployment_target = "10.7"
   # spec.tvos.deployment_target = "9.0"
 
+  spec.swift_versions = ['5.1', '5.2', '5.3']
+
   spec.source       = { :git => "https://github.com/hibernat/DiffableWithReload.git", :tag => spec.version }
   spec.source_files  = "DiffableWithReload", "DiffableWithReload/**/*.swift"
   
