@@ -35,7 +35,7 @@ class ViewControllerTableViewEasy: UIViewController {
     
     @IBAction func increasePriceOfAllFordCars(_ sender: Any) {
         // change data in the cars array
-        cars.increasePriceOfAllCars(brand: Self.ford, by: 100)
+        cars.increasePriceOfAllCars(brand: Self.ford, by: 1)
         // and just apply the current snapshot
         let snapshot = diffableDataSource.snapshot()
         // items for reload are automatically created
@@ -53,7 +53,7 @@ class ViewControllerTableViewEasy: UIViewController {
     
     @IBAction func increasePriceChangeColorAndShuffle(_ sender: Any) {
         // change data in the cars array
-        cars.increasePriceOfAllCars(brand: Self.ford, by: 100)
+        cars.increasePriceOfAllCars(brand: Self.ford, by: 1)
         cars.changeColorOfAllCars(brand: Self.volkswagen)
         // create new snapshot
         let snapshot = diffableDataSource.snapshot()
@@ -76,6 +76,8 @@ private extension ViewControllerTableViewEasy {
             EncodableContent(of: car, using: \.brand, \.model, \.registrationPlate, \.price, \.colorRed, \.colorGreen, \.colorBlue).data
         }
         
+        // this diffable data source is initialized sub-optimally, however as close to the UIKit version as possible
+        // see the AdvancedViewController for a bit more complex initialization, however with better performance
         diffableDataSource = TableViewDiffableEncodableDataSource(tableView: tableView) { [unowned self] tableView, indexPath, itemIdentifier in
             switch itemIdentifier {
             case .car(let vin):

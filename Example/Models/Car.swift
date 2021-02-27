@@ -9,13 +9,10 @@ import Foundation
 
 class Car {
     
-    static let brands = ["Audi", "BWM", "Chrysler", "Dodge", "Ford", "Honda", "Kia",
-                         "Mercedes-Benz", "Porsche", "Tesla", "Toyota", "Volkswagen"]
+    static let brands = ["Audi", "BWM", "Dodge", "Ford", "Mercedes-Benz", "Tesla", "Toyota", "Volkswagen"]
     
-    static let models = ["Panda", "Freemont", "Ducato", "Tipo", "Polo", "Golf", "ID.3", "Passat",
-                         "Bora", "Jetta", "Arteon", "T-Roc", "Touareg", "Sharan", "Accord", "Civic",
-                         "Legend", "Shuttle", "Rio", "Optima", "Sorento", "Soul", "Sportage",
-                         "Stinger", "PT Cruiser", "Sebring", "Voyager", "Ranger", "Expedition",
+    static let models = ["Polo", "Golf", "ID.3", "Passat", "Bora", "Jetta", "Arteon", "Touareg", "Sharan", "Accord", "Civic",
+                         "Legend", "Shuttle", "Stinger", "PT Cruiser", "Sebring", "Voyager", "Ranger", "Expedition",
                          "Mustang", "Bronco", "Edge", "Super Duty"]
     
     let vin: String // unique car identifier
