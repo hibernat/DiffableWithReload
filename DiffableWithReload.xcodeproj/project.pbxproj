@@ -12,7 +12,6 @@
 		A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */; };
 		A069C73825E506E9006BF686 /* CellContentObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73725E506E9006BF686 /* CellContentObject.swift */; };
 		A069C73A25E50707006BF686 /* ItemsReloadSupporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */; };
-		A0EE1F2525DEC3010065BFDD /* DiffableWithReload.h in Headers */ = {isa = PBXBuildFile; fileRef = A0EE1F2325DEC3010065BFDD /* DiffableWithReload.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A0EE1F2C25DEC3710065BFDD /* HashableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */; };
 		A0EE1F2E25DEC37A0065BFDD /* EncodableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F2D25DEC37A0065BFDD /* EncodableContent.swift */; };
 		A0EE1F3C25DEC41F0065BFDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */; };
@@ -58,7 +57,6 @@
 		A069C73725E506E9006BF686 /* CellContentObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellContentObject.swift; sourceTree = "<group>"; };
 		A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsReloadSupporting.swift; sourceTree = "<group>"; };
 		A0EE1F2025DEC3010065BFDD /* DiffableWithReload.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DiffableWithReload.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0EE1F2325DEC3010065BFDD /* DiffableWithReload.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiffableWithReload.h; sourceTree = "<group>"; };
 		A0EE1F2425DEC3010065BFDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashableContent.swift; sourceTree = "<group>"; };
 		A0EE1F2D25DEC37A0065BFDD /* EncodableContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncodableContent.swift; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 				A069C73725E506E9006BF686 /* CellContentObject.swift */,
 				A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */,
 				A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */,
-				A0EE1F2325DEC3010065BFDD /* DiffableWithReload.h */,
 				A0EE1F2425DEC3010065BFDD /* Info.plist */,
 			);
 			path = DiffableWithReload;
@@ -182,7 +179,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0EE1F2525DEC3010065BFDD /* DiffableWithReload.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

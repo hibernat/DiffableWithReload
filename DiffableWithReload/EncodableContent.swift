@@ -5,6 +5,8 @@
 //  Created by Michael Bernat on 11.02.2021.
 //
 
+import Foundation
+
 /**
  Once `EncodableContent` is initialized, use its `.data` property to get the unique equatable identifier
  representing the content specified by the keyPaths.
