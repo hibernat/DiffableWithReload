@@ -12,31 +12,21 @@ Classes
 Use these generic classes:
 
 ``` swift
-TableViewDiffableReloadingDataSource<
-    SectionIdentifierType: Hashable,
-    ItemIdentifierType: Hashable,
-    EquatableCellContent: Equatable
->
-CollectionViewDiffableReloadingDataSource<
-    SectionIdentifierType: Hashable,
-    ItemIdentifierType: Hashable,
-    EquatableCellContent: Equatable
->
+TableViewDiffableReloadingDataSource<SectionIdentifierType: Hashable, ItemIdentifierType: Hashable, EquatableCellContent: Equatable>
+
+CollectionViewDiffableReloadingDataSource<SectionIdentifierType: Hashable, ItemIdentifierType: Hashable, EquatableCellContent: Equatable>
 ```
 
 The idea
 -
 The basic idea of automated items reload generation for diffable datasources is the following:
 
-* for each cell displayed in the table/collection view is stored the displayed content
-* when snapshot is being applied, the current (stored) cell content is compared to the current data source content, and if these differs, cell must be reloaded
+* for each cell _used_ in the table/collection view is stored the displayed content
+* when snapshot is being applied, the current (stored) cell content is compared to the current data source content, and if these are not equal, cell must be reloaded
 * the `EquatableCellContent` is the content stored for each _used_ cell in the table/collection view. It can be anything `Equatable`, but for practical reasons, there are two structs creating equatable content:
 * `EncodableContent` creating `Data?` from the specified properties - `Data?` are unique identifier of the displayed content and can be easily created from any `Encodable` property.
-* `HashableContent` creating `Int` from the specified properties (the hash value) - `hashValue` is _not so unique_ identifier of the displayed content, however maybe is good enough, and is a bit faster than the `Data?` structure.
+* `HashableContent` creating `Int` from the specified properties (the hash value) - `hashValue` is _not so unique_ identifier of the displayed content, however, maybe is good enough, and integer storage and comparation is a bit faster than the `Data?` store and compare. Default choice should be `EncodableContent`.
 
-
-
-The example project uses type aliases for these
 
 Basic Example
 -
@@ -52,6 +42,7 @@ diffableDataSource.applyWithItemsReloadIfNeeded(snapshot, animatingDifferences: 
 ```
 
 See the demo project for more examples.
+The example project uses type aliases for these two classes, and, unfortunately, quick help in Xcode does not show quick help from the original generic classes.
 
 
 Setup Instructions
@@ -63,15 +54,15 @@ Setup Instructions
 To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'Toast-Swift', '~> 5.0.1'
+pod 'DiffableWithReload', '~> 0.2'
 ```
 
-and in your code add `import Toast_Swift`.
+and in your code use `import DiffableWithReload`.
 
 [Swift Package Manager](https://swift.org/package-manager/)
 ------------------
 
-When using Xcode 11 or later, you can install `Toast` by going to your Project settings > `Swift Packages` and add the repository by providing the GitHub URL. Alternatively, you can go to `File` > `Swift Packages` > `Add Package Dependencies...`
+When using Xcode 11 or later, you can install `DiffableWithReload` by going to your Project settings > `Swift Packages` and add the repository by providing the GitHub URL. Alternatively, you can go to `File` > `Swift Packages` > `Add Package Dependencies...`
 
 
 Compatibility
