@@ -99,7 +99,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A069C72F25E460FB006BF686 /* CarsAndMotorcycles TableView */ = {
+		A069C72F25E460FB006BF686 /* CarsAndMotorcycles (TableView) */ = {
 			isa = PBXGroup;
 			children = (
 				A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */,
@@ -108,15 +108,15 @@
 				A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */,
 				A021B65425F4EAEF00DDA069 /* CellViewModel.swift */,
 			);
-			path = "CarsAndMotorcycles TableView";
+			path = "CarsAndMotorcycles (TableView)";
 			sourceTree = "<group>";
 		};
-		A069C73225E46174006BF686 /* Cars TableView */ = {
+		A069C73225E46174006BF686 /* Cars (TableView) */ = {
 			isa = PBXGroup;
 			children = (
 				A0EE1F3F25DEC41F0065BFDD /* CarsViewController.swift */,
 			);
-			path = "Cars TableView";
+			path = "Cars (TableView)";
 			sourceTree = "<group>";
 		};
 		A0EE1F1625DEC3010065BFDD = {
@@ -156,9 +156,9 @@
 			isa = PBXGroup;
 			children = (
 				A0EE1F5325DEC6010065BFDD /* Models */,
-				A069C73225E46174006BF686 /* Cars TableView */,
-				A069C72F25E460FB006BF686 /* CarsAndMotorcycles TableView */,
-				A0FCE33C25EC07BE003E740D /* CollectionView */,
+				A069C73225E46174006BF686 /* Cars (TableView) */,
+				A069C72F25E460FB006BF686 /* CarsAndMotorcycles (TableView) */,
+				A0FCE33C25EC07BE003E740D /* Cars (CollectionView) */,
 				A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */,
 				A0EE1F3D25DEC41F0065BFDD /* SceneDelegate.swift */,
 				A0EE1F4125DEC41F0065BFDD /* Main.storyboard */,
@@ -185,11 +185,11 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A0FCE33C25EC07BE003E740D /* CollectionView */ = {
+		A0FCE33C25EC07BE003E740D /* Cars (CollectionView) */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = CollectionView;
+			path = "Cars (CollectionView)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

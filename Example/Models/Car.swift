@@ -11,17 +11,26 @@ import Foundation
 // EncodableContent and HashableContent can work with both structs and classes
 class Car {
     
-    static let fordBrand = "Ford"
-    static let volkswagenBrand = "Volkswagen"
-    
-    static let brands = ["Audi", "BWM", Car.fordBrand, "Mercedes-Benz", "Tesla", "Toyota", Car.volkswagenBrand]
-    
-    static let models = ["Golf", "ID.3", "Passat", "Arteon", "PT Cruiser", "Sebring", "Voyager",
-                         "Ranger", "Expedition", "Mustang", "Bronco", "Edge", "Super Duty", "Model 3"]
+    enum Brand: String, CaseIterable {
+        case ford = "Ford"
+        case volkswagen = "Volkswagen"
+        case tesla = "Tesla"
+        case toyota = "Toyota"
+        case mercedesBenz = "Mercedes-Benz"
+    }
+        
+    static let brands = Brand.allCases
+    static let models: [Brand: [String]] = [
+        .ford: ["Expedition", "Mustang", "Explorer", "Edge", "Super Duty"],
+        .volkswagen: ["Golf", "ID.3", "Passat"],
+        .tesla: ["Model X", "Model S", "Model Y"],
+        .toyota: ["Camry", "Corolla", "Mirai", "RAV4"],
+        .mercedesBenz: ["A-Class", "E-Class", "CLA", "CLS", "Maybach"],
+    ]
     
     let vin: String // unique car identifier
     var registrationPlate: String? // not every car has a registration plate
-    let brand: String
+    let brand: Brand
     let model: String
     var price: Int
     var colorRed: Float
@@ -29,7 +38,7 @@ class Car {
     var colorBlue: Float
     var instructionManual: Data? // example of data that are not displayed in the table/collection view
     
-    init(brand: String? = nil) {
+    init(brand: Brand? = nil) {
         vin = UUID().uuidString
         if Int.random(in: 0...7) == 0 {
             registrationPlate = nil // car without registration plate
@@ -37,7 +46,7 @@ class Car {
             registrationPlate = String(UUID().uuidString.prefix(6))
         }
         self.brand = brand ?? Self.brands.randomElement()!
-        model = Self.models.randomElement()!
+        model = Self.models[self.brand]!.randomElement()!
         price = Int.random(in: 3...50) * 1000
         colorRed = Float.random(in: 0.5 ... 1)
         colorGreen = Float.random(in: 0.5 ... 1)
@@ -58,13 +67,13 @@ class Car {
 
 extension Array where Element == Car {
     
-    func increasePriceOfAllCars(brand: String, by amount: Int) {
+    func increasePriceOfAllCars(brand: Car.Brand, by amount: Int) {
         for car in self where car.brand == brand {
             car.increasePrice(by: amount)
         }
     }
     
-    func changeColorOfAllCars(brand: String) {
+    func changeColorOfAllCars(brand: Car.Brand) {
         for car in self where car.brand == brand {
             car.changeColor()
         }

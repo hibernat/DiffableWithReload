@@ -76,10 +76,10 @@ class CarsAndMotorcyclesView: UIView {
                 newSnapshot.appendSections(identifiers.sectionIdentifiers)
                 // set item identifiers in the snapshot
                 for section in identifiers.sectionIdentifiers {
-                    newSnapshot.appendItems(identifiers.itemIdentifiers[section] ?? [], toSection: section)
+                    newSnapshot.appendItems(identifiers.itemIdentifiersDirectory[section] ?? [], toSection: section)
                 }
                 // apply snapshot
-                self.diffableDataSource.applyWithItemsReloadIfNeeded(newSnapshot, animatingDifferences: true, reloadItemsAnimation: .right)
+                self.diffableDataSource.applyWithItemsReloadIfNeeded(newSnapshot, animatingDifferences: true, reloadItemsAnimation: .left)
             }
             .store(in: &cancellables)
     }

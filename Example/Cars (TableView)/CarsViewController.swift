@@ -32,7 +32,7 @@ class CarsViewController: UIViewController {
     
     @IBAction func increasePriceOfAllFordCars(_ sender: Any) {
         // change data in the cars array
-        cars.increasePriceOfAllCars(brand: Car.fordBrand, by: 1)
+        cars.increasePriceOfAllCars(brand: .ford, by: 1)
         // and just apply the current snapshot
         let snapshot = diffableDataSource.snapshot()
         // items for reload are automatically created
@@ -41,7 +41,7 @@ class CarsViewController: UIViewController {
     
     @IBAction func changeColorOfAllVolkswagenCars(_ sender: Any) {
         // change data in the cars array
-        cars.changeColorOfAllCars(brand: Car.volkswagenBrand)
+        cars.changeColorOfAllCars(brand: .volkswagen)
         // and just apply the current snapshot
         let snapshot = diffableDataSource.snapshot()
         // items for reload are automatically created
@@ -50,8 +50,8 @@ class CarsViewController: UIViewController {
     
     @IBAction func increasePriceChangeColorAndShuffle(_ sender: Any) {
         // change data in the cars array
-        cars.increasePriceOfAllCars(brand: Car.fordBrand, by: 1)
-        cars.changeColorOfAllCars(brand: Car.volkswagenBrand)
+        cars.increasePriceOfAllCars(brand: .ford, by: 1)
+        cars.changeColorOfAllCars(brand: .volkswagen)
         // create new snapshot
         let snapshot = diffableDataSource.snapshot()
         let itemIdentifiers = snapshot.itemIdentifiers.shuffled()
@@ -74,7 +74,7 @@ private extension CarsViewController {
                 // seek for a car with the vin
                 guard let car = self?.cars.first(where: {$0.vin == vin}) else { return cell }
                 // car found, configure the cell
-                cell.textLabel?.text = "\(car.brand) \(car.model) \(car.registrationPlate ?? "")"
+                cell.textLabel?.text = "\(car.brand.rawValue) \(car.model) \(car.registrationPlate ?? "")"
                 cell.detailTextLabel?.text = "\(car.price)"
                 cell.contentView.backgroundColor = UIColor(
                     red: CGFloat(car.colorRed),
@@ -91,15 +91,15 @@ private extension CarsViewController {
                 guard let car = self?.cars.first(where: { $0.vin == vin }) else { return nil }
                 // car has been found, return cell content data
                 // do not include keypaths to properties that are not displayed in the cell!
-                return EncodableContent(of: car, using: \.brand, \.model, \.registrationPlate, \.price, \.colorRed, \.colorGreen, \.colorBlue).data
+                return EncodableContent(of: car, using: \.brand.rawValue, \.model, \.registrationPlate, \.price, \.colorRed, \.colorGreen, \.colorBlue).data
             }
         }
     }
     
     func initializeCars() {
-        cars = (0...8).map { _ in Car() }
-        cars.insert(Car(brand: Car.fordBrand), at: 2)
-        cars.insert(Car(brand: Car.volkswagenBrand), at: 4)
+        cars = (0...19).map { _ in Car() }
+        cars.insert(Car(brand: .ford), at: 2)
+        cars.insert(Car(brand: .volkswagen), at: 4)
     }
     
     func applyInitialSnapshot() {
