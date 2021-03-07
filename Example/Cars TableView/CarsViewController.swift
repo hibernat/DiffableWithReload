@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CarsViewController.swift
 //  Example
 //
 //  Created by Michael Bernat on 18.02.2021.
@@ -8,10 +8,7 @@
 import UIKit
 import DiffableWithReload
 
-class ViewControllerTableViewEasy: UIViewController {
-    
-    static let ford = "Ford"
-    static let volkswagen = "Volkswagen"
+class CarsViewController: UIViewController {
     
     enum SectionIdentifier: Int {
         case sectionOne
@@ -23,7 +20,7 @@ class ViewControllerTableViewEasy: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    private var diffableDataSource: TableViewDiffableEncodableDataSource<SectionIdentifier, ItemIdentifier>!
+    private var diffableDataSource: TableViewDiffableReloadingDataSource<SectionIdentifier, ItemIdentifier, Data>!
     private var cars: [Car]!
     
     override func viewDidLoad() {
@@ -35,7 +32,7 @@ class ViewControllerTableViewEasy: UIViewController {
     
     @IBAction func increasePriceOfAllFordCars(_ sender: Any) {
         // change data in the cars array
-        cars.increasePriceOfAllCars(brand: Self.ford, by: 1)
+        cars.increasePriceOfAllCars(brand: Car.fordBrand, by: 1)
         // and just apply the current snapshot
         let snapshot = diffableDataSource.snapshot()
         // items for reload are automatically created
@@ -44,7 +41,7 @@ class ViewControllerTableViewEasy: UIViewController {
     
     @IBAction func changeColorOfAllVolkswagenCars(_ sender: Any) {
         // change data in the cars array
-        cars.changeColorOfAllCars(brand: Self.volkswagen)
+        cars.changeColorOfAllCars(brand: Car.volkswagenBrand)
         // and just apply the current snapshot
         let snapshot = diffableDataSource.snapshot()
         // items for reload are automatically created
@@ -53,8 +50,8 @@ class ViewControllerTableViewEasy: UIViewController {
     
     @IBAction func increasePriceChangeColorAndShuffle(_ sender: Any) {
         // change data in the cars array
-        cars.increasePriceOfAllCars(brand: Self.ford, by: 1)
-        cars.changeColorOfAllCars(brand: Self.volkswagen)
+        cars.increasePriceOfAllCars(brand: Car.fordBrand, by: 1)
+        cars.changeColorOfAllCars(brand: Car.volkswagenBrand)
         // create new snapshot
         let snapshot = diffableDataSource.snapshot()
         let itemIdentifiers = snapshot.itemIdentifiers.shuffled()
@@ -67,23 +64,15 @@ class ViewControllerTableViewEasy: UIViewController {
     
 }
 
-private extension ViewControllerTableViewEasy {
+private extension CarsViewController {
     
     func initializeDataSource() {
-        // this closure expression is used both in cellProvider and in cellContentProvider
-        let cellContentData: (Car) -> Data? = { car in
-            // just these keypaths are displayed in the cell, do not include keypaths to properties that are not displayed in the cell
-            EncodableContent(of: car, using: \.brand, \.model, \.registrationPlate, \.price, \.colorRed, \.colorGreen, \.colorBlue).data
-        }
-        
-        // this diffable data source is initialized sub-optimally, however as close to the UIKit version as possible
-        // see the AdvancedViewController for a bit more complex initialization, however with better performance
-        diffableDataSource = TableViewDiffableEncodableDataSource(tableView: tableView) { [unowned self] tableView, indexPath, itemIdentifier in
+        diffableDataSource = TableViewDiffableReloadingDataSource(tableView: tableView) { [weak self] (tableView, indexPath, itemIdentifier) -> UITableViewCell in
             switch itemIdentifier {
             case .car(let vin):
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CellOne", for: indexPath)
                 // seek for a car with the vin
-                guard let car = self.cars.first(where: {$0.vin == vin}) else { return (nil, nil) }
+                guard let car = self?.cars.first(where: {$0.vin == vin}) else { return cell }
                 // car found, configure the cell
                 cell.textLabel?.text = "\(car.brand) \(car.model) \(car.registrationPlate ?? "")"
                 cell.detailTextLabel?.text = "\(car.price)"
@@ -93,25 +82,24 @@ private extension ViewControllerTableViewEasy {
                     blue: CGFloat(car.colorBlue),
                     alpha: 1
                 )
-                // compute the cell content data
-                let data = cellContentData(car)
-                return (cell, data)
+                return cell
             }
-        } cellContentProvider: { [unowned self] itemIdentifier in
+        } cellContentProvider: { [weak self] itemIdentifier in
             switch itemIdentifier {
             case .car(let vin):
                 // seek for a car with the vin
-                guard let car = self.cars.first(where: { $0.vin == vin }) else { return nil }
+                guard let car = self?.cars.first(where: { $0.vin == vin }) else { return nil }
                 // car has been found, return cell content data
-                return cellContentData(car)
+                // do not include keypaths to properties that are not displayed in the cell!
+                return EncodableContent(of: car, using: \.brand, \.model, \.registrationPlate, \.price, \.colorRed, \.colorGreen, \.colorBlue).data
             }
         }
     }
     
     func initializeCars() {
-        cars = (0...8).map { _ in Car.init(brand: nil) }
-        cars.append(Car(brand: Self.ford))
-        cars.append(Car(brand: Self.volkswagen))
+        cars = (0...8).map { _ in Car() }
+        cars.insert(Car(brand: Car.fordBrand), at: 2)
+        cars.insert(Car(brand: Car.volkswagenBrand), at: 4)
     }
     
     func applyInitialSnapshot() {

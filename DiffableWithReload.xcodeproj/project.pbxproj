@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A069C72E25E43F01006BF686 /* AdvancedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C72D25E43F01006BF686 /* AdvancedViewController.swift */; };
-		A069C73425E461B4006BF686 /* AdvancedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73325E461B4006BF686 /* AdvancedViewModel.swift */; };
+		A021B65125F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */; };
+		A021B65325F4E48300DDA069 /* CarsAndMotorcyclesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */; };
+		A021B65525F4EAEF00DDA069 /* CellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65425F4EAEF00DDA069 /* CellViewModel.swift */; };
+		A069C72E25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C72D25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift */; };
+		A069C73425E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73325E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift */; };
 		A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */; };
 		A069C73825E506E9006BF686 /* CellContentObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73725E506E9006BF686 /* CellContentObject.swift */; };
 		A069C73A25E50707006BF686 /* ItemsReloadSupporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */; };
@@ -16,7 +19,7 @@
 		A0EE1F2E25DEC37A0065BFDD /* EncodableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F2D25DEC37A0065BFDD /* EncodableContent.swift */; };
 		A0EE1F3C25DEC41F0065BFDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */; };
 		A0EE1F3E25DEC41F0065BFDD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F3D25DEC41F0065BFDD /* SceneDelegate.swift */; };
-		A0EE1F4025DEC41F0065BFDD /* EasyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F3F25DEC41F0065BFDD /* EasyViewController.swift */; };
+		A0EE1F4025DEC41F0065BFDD /* CarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F3F25DEC41F0065BFDD /* CarsViewController.swift */; };
 		A0EE1F4325DEC41F0065BFDD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0EE1F4125DEC41F0065BFDD /* Main.storyboard */; };
 		A0EE1F4525DEC4200065BFDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0EE1F4425DEC4200065BFDD /* Assets.xcassets */; };
 		A0EE1F4825DEC4200065BFDD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0EE1F4625DEC4200065BFDD /* LaunchScreen.storyboard */; };
@@ -52,8 +55,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A069C72D25E43F01006BF686 /* AdvancedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedViewController.swift; sourceTree = "<group>"; };
-		A069C73325E461B4006BF686 /* AdvancedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedViewModel.swift; sourceTree = "<group>"; };
+		A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesDataSource.swift; sourceTree = "<group>"; };
+		A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesView.swift; sourceTree = "<group>"; };
+		A021B65425F4EAEF00DDA069 /* CellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewModel.swift; sourceTree = "<group>"; };
+		A069C72D25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesViewController.swift; sourceTree = "<group>"; };
+		A069C73325E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesViewModel.swift; sourceTree = "<group>"; };
 		A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffableReloadingDataSource.swift; sourceTree = "<group>"; };
 		A069C73725E506E9006BF686 /* CellContentObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellContentObject.swift; sourceTree = "<group>"; };
 		A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsReloadSupporting.swift; sourceTree = "<group>"; };
@@ -64,7 +70,7 @@
 		A0EE1F3925DEC41F0065BFDD /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0EE1F3D25DEC41F0065BFDD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A0EE1F3F25DEC41F0065BFDD /* EasyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyViewController.swift; sourceTree = "<group>"; };
+		A0EE1F3F25DEC41F0065BFDD /* CarsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsViewController.swift; sourceTree = "<group>"; };
 		A0EE1F4225DEC41F0065BFDD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A0EE1F4425DEC4200065BFDD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A0EE1F4725DEC4200065BFDD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -93,21 +99,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A069C72F25E460FB006BF686 /* TableViewAdvanced */ = {
+		A069C72F25E460FB006BF686 /* CarsAndMotorcycles TableView */ = {
 			isa = PBXGroup;
 			children = (
-				A069C72D25E43F01006BF686 /* AdvancedViewController.swift */,
-				A069C73325E461B4006BF686 /* AdvancedViewModel.swift */,
+				A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */,
+				A069C72D25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift */,
+				A069C73325E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift */,
+				A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */,
+				A021B65425F4EAEF00DDA069 /* CellViewModel.swift */,
 			);
-			path = TableViewAdvanced;
+			path = "CarsAndMotorcycles TableView";
 			sourceTree = "<group>";
 		};
-		A069C73225E46174006BF686 /* TableViewEasy */ = {
+		A069C73225E46174006BF686 /* Cars TableView */ = {
 			isa = PBXGroup;
 			children = (
-				A0EE1F3F25DEC41F0065BFDD /* EasyViewController.swift */,
+				A0EE1F3F25DEC41F0065BFDD /* CarsViewController.swift */,
 			);
-			path = TableViewEasy;
+			path = "Cars TableView";
 			sourceTree = "<group>";
 		};
 		A0EE1F1625DEC3010065BFDD = {
@@ -147,8 +156,9 @@
 			isa = PBXGroup;
 			children = (
 				A0EE1F5325DEC6010065BFDD /* Models */,
-				A069C73225E46174006BF686 /* TableViewEasy */,
-				A069C72F25E460FB006BF686 /* TableViewAdvanced */,
+				A069C73225E46174006BF686 /* Cars TableView */,
+				A069C72F25E460FB006BF686 /* CarsAndMotorcycles TableView */,
+				A0FCE33C25EC07BE003E740D /* CollectionView */,
 				A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */,
 				A0EE1F3D25DEC41F0065BFDD /* SceneDelegate.swift */,
 				A0EE1F4125DEC41F0065BFDD /* Main.storyboard */,
@@ -173,6 +183,13 @@
 				A0EE1F5825DEC89C0065BFDD /* Motorcycle.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		A0FCE33C25EC07BE003E740D /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CollectionView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,13 +317,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A021B65525F4EAEF00DDA069 /* CellViewModel.swift in Sources */,
+				A021B65125F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift in Sources */,
 				A0EE1F5925DEC89C0065BFDD /* Motorcycle.swift in Sources */,
-				A069C73425E461B4006BF686 /* AdvancedViewModel.swift in Sources */,
+				A069C73425E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift in Sources */,
 				A0EE1F5525DEC6120065BFDD /* Car.swift in Sources */,
-				A0EE1F4025DEC41F0065BFDD /* EasyViewController.swift in Sources */,
+				A0EE1F4025DEC41F0065BFDD /* CarsViewController.swift in Sources */,
 				A0EE1F3C25DEC41F0065BFDD /* AppDelegate.swift in Sources */,
-				A069C72E25E43F01006BF686 /* AdvancedViewController.swift in Sources */,
+				A069C72E25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift in Sources */,
 				A0EE1F3E25DEC41F0065BFDD /* SceneDelegate.swift in Sources */,
+				A021B65325F4E48300DDA069 /* CarsAndMotorcyclesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

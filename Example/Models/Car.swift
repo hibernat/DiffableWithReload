@@ -7,13 +7,17 @@
 
 import Foundation
 
+// Car is a class just for demonstartion purposes, demonstrating that
+// EncodableContent and HashableContent can work with both structs and classes
 class Car {
     
-    static let brands = ["Audi", "BWM", "Dodge", "Ford", "Mercedes-Benz", "Tesla", "Toyota", "Volkswagen"]
+    static let fordBrand = "Ford"
+    static let volkswagenBrand = "Volkswagen"
     
-    static let models = ["Polo", "Golf", "ID.3", "Passat", "Bora", "Jetta", "Arteon", "Touareg", "Sharan", "Accord", "Civic",
-                         "Legend", "Shuttle", "Stinger", "PT Cruiser", "Sebring", "Voyager", "Ranger", "Expedition",
-                         "Mustang", "Bronco", "Edge", "Super Duty"]
+    static let brands = ["Audi", "BWM", Car.fordBrand, "Mercedes-Benz", "Tesla", "Toyota", Car.volkswagenBrand]
+    
+    static let models = ["Golf", "ID.3", "Passat", "Arteon", "PT Cruiser", "Sebring", "Voyager",
+                         "Ranger", "Expedition", "Mustang", "Bronco", "Edge", "Super Duty", "Model 3"]
     
     let vin: String // unique car identifier
     var registrationPlate: String? // not every car has a registration plate
@@ -25,10 +29,10 @@ class Car {
     var colorBlue: Float
     var instructionManual: Data? // example of data that are not displayed in the table/collection view
     
-    init(brand: String?) {
+    init(brand: String? = nil) {
         vin = UUID().uuidString
         if Int.random(in: 0...7) == 0 {
-            registrationPlate = nil
+            registrationPlate = nil // car without registration plate
         } else {
             registrationPlate = String(UUID().uuidString.prefix(6))
         }
