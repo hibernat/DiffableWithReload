@@ -11,6 +11,7 @@ import DiffableWithReload
 class CarsAndMotorcyclesDataSource: TableViewDiffableReloadingDataSource<
     CarsAndMotorcyclesViewModel.SectionIdentifier,
     CarsAndMotorcyclesViewModel.ItemIdentifier,
+    CarsAndMotorcyclesViewModel,
     Data
 > {
  

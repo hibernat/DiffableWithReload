@@ -20,7 +20,7 @@ class MotorcyclesViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var diffableDataSource: CollectionViewDiffableReloadingDataSource<SectionIdentifier, ItemIdentifier, Int>!  // Int for hashValue, just for demonstation
+    private var diffableDataSource: CollectionViewDiffableReloadingDataSource<SectionIdentifier, ItemIdentifier, MotorcyclesViewController, Int>!  // Int for hashValue, just for demonstation
     private var motorcycles: [Motorcycle]!
     
     override func viewDidLoad() {
@@ -53,6 +53,14 @@ class MotorcyclesViewController: UIViewController {
 //        diffableDataSource.applyWithItemsReloadIfNeeded(newSnapshot, animatingDifferences: true)
 //    }
     
+}
+
+extension MotorcyclesViewController: ReloadingDataSourceDelegate {
+    // there is no locking mechanism implemented, however this conformance must be set
+    // CollectionViewDiffableReloadingDataSource requires 4 generic types
+    
+    // this typealias is required to define generic type for ReloadingDataSourceDelegate
+    typealias ItemIdentifierType = ItemIdentifier
 }
 
 private extension MotorcyclesViewController {

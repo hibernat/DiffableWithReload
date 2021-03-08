@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import DiffableWithReload
 
 class CarsAndMotorcyclesViewModel {
     
@@ -127,6 +128,18 @@ class CarsAndMotorcyclesViewModel {
         let firstSectionIdentifier = newTableViewIdentifiers.sectionIdentifiers.removeFirst()
         newTableViewIdentifiers.sectionIdentifiers.append(firstSectionIdentifier)
         tableViewIdentifiers = newTableViewIdentifiers  // and now new value of tableViewIdentifiers is published
+    }
+    
+}
+
+extension CarsAndMotorcyclesViewModel: ReloadingDataSourceDelegate {
+    
+    func reloadingDataSource(_ : Any, willReadItemForItemIdentifier: ItemIdentifier) {
+        
+    }
+    
+    func reloadingDataSource(_ : Any, didReadItemForItemIdentifier: ItemIdentifier) {
+        
     }
     
 }
