@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A005BB1925F653A700836F86 /* ItemsReloadSupporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A005BB1825F653A700836F86 /* ItemsReloadSupporting.swift */; };
 		A021B65125F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */; };
 		A021B65325F4E48300DDA069 /* CarsAndMotorcyclesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */; };
 		A021B65525F4EAEF00DDA069 /* CellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65425F4EAEF00DDA069 /* CellViewModel.swift */; };
@@ -57,6 +58,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A005BB1825F653A700836F86 /* ItemsReloadSupporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsReloadSupporting.swift; sourceTree = "<group>"; };
 		A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesDataSource.swift; sourceTree = "<group>"; };
 		A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesView.swift; sourceTree = "<group>"; };
 		A021B65425F4EAEF00DDA069 /* CellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewModel.swift; sourceTree = "<group>"; };
@@ -148,9 +150,10 @@
 				A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */,
 				A0EE1F2D25DEC37A0065BFDD /* EncodableContent.swift */,
 				A069C73725E506E9006BF686 /* CellContentObject.swift */,
+				A005BB1825F653A700836F86 /* ItemsReloadSupporting.swift */,
+				A021B65A25F628E100DDA069 /* ReloadingDataSourceDelegate.swift */,
 				A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */,
 				A0FCE33725EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift */,
-				A021B65A25F628E100DDA069 /* ReloadingDataSourceDelegate.swift */,
 				A0EE1F2425DEC3010065BFDD /* Info.plist */,
 			);
 			path = DiffableWithReload;
@@ -316,6 +319,7 @@
 				A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */,
 				A0EE1F2C25DEC3710065BFDD /* HashableContent.swift in Sources */,
 				A021B65B25F628E100DDA069 /* ReloadingDataSourceDelegate.swift in Sources */,
+				A005BB1925F653A700836F86 /* ItemsReloadSupporting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import DiffableWithReload
 
 class CarsAndMotorcyclesView: UIView {
     
@@ -44,7 +43,7 @@ class CarsAndMotorcyclesView: UIView {
             return self?.viewModel.cellViewModel(for: itemIdentifier)?.cellContentData
         } cellWithContentProvider: { [weak self] (tableView, indexPath, itemIdentifier) -> (UITableViewCell?, Data?) in
             // returns tuple of configured cell and cell content data
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CellOne", for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CarAndMotorcycleCell", for: indexPath)
             // this is the only call to viewModel for data needed to configuring the cell, will be also used for computing the cellContentData
             guard let cellViewModel = self?.viewModel.cellViewModel(for: itemIdentifier) else { return (cell, nil) }
             // cell view model is available, configuring the cell

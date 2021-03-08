@@ -10,14 +10,14 @@ import UIKit
 /**
  Automatically remembers (stores) the content displayed by the table view cell.
  When any new snapshot is applied using `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, reloadItemsAnimation:, completion:)`,
- then items requiring reload are automaticaly identified, and are added to the snapshot being applied.
+ then items requiring reload are automaticaly identified, and are added to the applying snapshot.
  */
 open class TableViewDiffableReloadingDataSource<
     SectionIdentifierType: Hashable,
     ItemIdentifierType,
     Delegate: ReloadingDataSourceDelegate,
     EquatableCellContent: Equatable
->: UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType> where Delegate.ItemIdentifierType == ItemIdentifierType {
+>: UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>, ItemsReloadSupporting where Delegate.ItemIdentifierType == ItemIdentifierType {
     
     public typealias CellContentProvider = (ItemIdentifierType) -> EquatableCellContent?
     public typealias CellWithContentProvider = (UITableView, IndexPath, ItemIdentifierType) -> (cell: UITableViewCell?, cellContent: EquatableCellContent?)
@@ -30,7 +30,7 @@ open class TableViewDiffableReloadingDataSource<
     
     /// Maps the cells use by the table view to the content displayed in that cell.
     /// When table view cell is deallocated, the stored content object is also released.
-    var cellContentMapTable = NSMapTable<UITableViewCell, CellContentObject<ItemIdentifierType, EquatableCellContent>>(
+    var cellContentMapTable = NSMapTable<UIView, CellContentObject<ItemIdentifierType, EquatableCellContent>>(
         keyOptions: .weakMemory,
         valueOptions: .strongMemory
     )
@@ -141,7 +141,7 @@ open class TableViewDiffableReloadingDataSource<
     }
     
     /**
-     In the first step, items (table view cells) that need reload are identified by comparing the stored cell content and
+     In the first step, items (table view cells) that need reload, are identified by comparing the stored cell content and
      the potentially new cell content based on current value in the data source.
      The modified items  are then reloaded using `apply(_:, animatingDifferences: , completion:)`.
      Finally, the snapshot provided in the first parameter is applied by calling `apply(_:, animatingDifferences: , completion:)`.
@@ -171,85 +171,26 @@ open class TableViewDiffableReloadingDataSource<
                 // animated rows reloading
                 let originalRowAnimation = defaultRowAnimation
                 defaultRowAnimation = reloadItemsAnimation
+                removeCellContentObjects(for: itemIdentifiersForReload)
                 apply(currentSnapshotWithReloadItems, animatingDifferences: true)
                 defaultRowAnimation = originalRowAnimation
             } else {
                 // no animation for reloading rows
+                removeCellContentObjects(for: itemIdentifiersForReload)
                 apply(currentSnapshotWithReloadItems, animatingDifferences: false)
             }
         }
         apply(snapshot, animatingDifferences: animatingDifferences, completion: completion)
     }
     
-    /**
-     While the UITableViewCell is in use, this method stores both the item identifier and the cell content
-     that the cell displays. The `cellContent` is used to decide whether the cell should be reloaded or not.
-     The `cellCcontent` is kept only for items used by a cell in the table view.
-     - Parameters:
-        - cellContent: content (data, hash value or anything Equatable) describing (identifying) the displayed content in the cell.
-     Use `EncodableContent` type and `.data` property, or `HashableContent` type and `.hashValue` property for
-     an easy creation of the cell content. The only requirement on this type is being Equatable, so any other ways of getting
-     the cell content are possible.
-        - itemIdentifier: item identifier of the item that configured the cell
-        - cell: view that was configured by this `cellContent`, expected is `UITableViewCell`
-     */
-    private func store(cellContent: EquatableCellContent?, for itemIdentifier: ItemIdentifierType, in cell: UITableViewCell) {
-        let cellContentObject = CellContentObject<ItemIdentifierType, EquatableCellContent>(
-            itemIdentifier: itemIdentifier,
-            cellContent: cellContent
-        )
-        // in UITableView is not happening that more cells are configured by the same itemIdentifier
-        // is the itemIdentifier already used in some existing cell?
-        let keyEnumerator = cellContentMapTable.keyEnumerator()
-        var keyIterator = keyEnumerator.makeIterator()
-        // iterating over all cells that the table view ever used
-        while let key = keyIterator.next() as? UITableViewCell {
-            guard let object = cellContentMapTable.object(forKey: key) else {
-                // for this cell is no stored cellContent
-                continue
-            }
-            if object.itemIdentifier == itemIdentifier {
-                // the itemIdentifier is already used in cell, and can be dropped from the cellContentMapTable
-                // because this itemIdentifier will be stored under another cell that is being configured
-                // by this cellContent
-                cellContentMapTable.removeObject(forKey: key)
-                // there cannot be more objects for this itemIdentifier, no need to continue in searching
-                break
-            }
-        }
-        // cellContentMapTable does not contain any object for this itemIdentifier
-        cellContentMapTable.setObject(cellContentObject, forKey: cell)
+    // required by ItemsReloadSupporting protocol
+    func willReadItem(for itemIdentifier: ItemIdentifierType) {
+        delegate?.reloadingDataSource(self, willReadItemForItemIdentifier: itemIdentifier)
     }
     
-    /**
-     Searches for item identifiers that need cell reload in `newItemIdentifiers`. This task is accomplished by
-     comparison of stored cell content and new cell content that is based on current value of the data source.
-     - Parameter newItemIdentifiers: item identifiers intended to be applied to the table view in a snapshot
-     - Returns: subset of `newItemIdentifiers` that need reload
-     */
-    private func itemIdentifiersNeedingReload(from newItemIdentifiers: [ItemIdentifierType]) -> [ItemIdentifierType] {
-        var itemIdentifiersForReload: [ItemIdentifierType] = []
-        guard let objectEnumerator = cellContentMapTable.objectEnumerator() else { return [] }
-        var cellContentObjectIterator = objectEnumerator.makeIterator()
-        // iterating over all stored content data, checking whether cell reload is needed
-        while let cellContentObject = cellContentObjectIterator.next() as? CellContentObject<ItemIdentifierType, EquatableCellContent> {
-            let itemIdentifier = cellContentObject.itemIdentifier
-            if !newItemIdentifiers.contains(itemIdentifier) { continue }
-            // new item identifiers contain identifier that is currently displayed in some cell
-            delegate?.reloadingDataSource(self, willReadItemForItemIdentifier: itemIdentifier)
-            if let newCellContent = cellContentProvider(itemIdentifier) {
-                // new cell content is available
-                delegate?.reloadingDataSource(self, didReadItemForItemIdentifier: itemIdentifier)
-                if newCellContent != cellContentObject.cellContent {
-                    // content has changed, cell must be reloaded
-                    itemIdentifiersForReload.append(itemIdentifier)
-                }
-            } else {
-                // new content data is nil, cell will be reloaded
-                delegate?.reloadingDataSource(self, didReadItemForItemIdentifier: itemIdentifier)
-                itemIdentifiersForReload.append(itemIdentifier)
-            }
-        }
-        return itemIdentifiersForReload
+    // required by ItemsReloadSupporting protocol
+    func didReadItem(for itemIdentifier: ItemIdentifierType) {
+        delegate?.reloadingDataSource(self, didReadItemForItemIdentifier: itemIdentifier)
     }
+    
 }

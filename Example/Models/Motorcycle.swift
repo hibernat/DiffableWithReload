@@ -9,7 +9,7 @@ import Foundation
 
 struct Motorcycle {
     
-    static var vinCounter = 0
+    static var vinCounter = 0  // used for generating unique identifiers
     
     enum Brand: String, CaseIterable {
         case ducati = "Ducati"

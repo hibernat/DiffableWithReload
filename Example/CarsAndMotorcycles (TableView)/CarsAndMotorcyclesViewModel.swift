@@ -53,7 +53,7 @@ class CarsAndMotorcyclesViewModel {
         let carsCountSectionOne = 4
         let carsCountSectionTwo = 2
         let carsCount = carsCountSectionOne + carsCountSectionTwo
-        let motorcyclesCount = 5
+        let motorcyclesCount = 8
         // initialize cars
         cars = (0..<(carsCount - 2)).map { _ in Car() }
         cars.append(Car(brand: .ford))
@@ -119,7 +119,7 @@ class CarsAndMotorcyclesViewModel {
             to: sectionTo
         )
         newTableViewIdentifiers.underlyingDataChangeToggle.toggle() // this guarantees that tableViewIdentifiers will publish new value
-        tableViewIdentifiers = newTableViewIdentifiers // everything is set at once, and one value is published to subscribers
+        tableViewIdentifiers = newTableViewIdentifiers // everything is set at once, and just one value is published to subscribers
     }
     
     func switchSections() {
@@ -134,12 +134,26 @@ class CarsAndMotorcyclesViewModel {
 
 extension CarsAndMotorcyclesViewModel: ReloadingDataSourceDelegate {
     
-    func reloadingDataSource(_ : Any, willReadItemForItemIdentifier: ItemIdentifier) {
-        
+    func reloadingDataSource(_ dataSource: Any, willReadItemForItemIdentifier itemIdentifier: ItemIdentifier) {
+        switch itemIdentifier {
+        case .car:
+            // block write on cars if needed
+            break
+        case .motorcycle:
+            // block write on motorcycles if needed
+            break
+        }
     }
     
-    func reloadingDataSource(_ : Any, didReadItemForItemIdentifier: ItemIdentifier) {
-        
+    func reloadingDataSource(_ dataSource: Any, didReadItemForItemIdentifier itemIdentifier: ItemIdentifier) {
+        switch itemIdentifier {
+        case .car:
+            // allow write on cars if needed
+            break
+        case .motorcycle:
+            // allow write on motorcycles if needed
+            break
+        }
     }
     
 }

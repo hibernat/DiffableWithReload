@@ -78,7 +78,7 @@ private extension CarsViewController {
         diffableDataSource = TableViewDiffableReloadingDataSource(tableView: tableView) { [weak self] (tableView, indexPath, itemIdentifier) -> UITableViewCell in
             switch itemIdentifier {
             case .car(let vin):
-                let cell = tableView.dequeueReusableCell(withIdentifier: "CellOne", for: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CarCell", for: indexPath)
                 // seek for a car with the vin
                 guard let car = self?.cars.first(where: {$0.vin == vin}) else { return cell }
                 // car found, configure the cell

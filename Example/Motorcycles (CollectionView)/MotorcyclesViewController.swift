@@ -69,8 +69,8 @@ private extension MotorcyclesViewController {
         diffableDataSource = CollectionViewDiffableReloadingDataSource(collectionView: collectionView) { [weak self] (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell in
             switch itemIdentifier {
             case .motorcycle(let vin):
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellOne", for: indexPath) as! CollectionViewCell
-                // seek for a car with the vin
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MotorcycleCell0", for: indexPath) as! CollectionViewCell
+                // seek for a motorcycle with the vin
                 guard let motorcycle = self?.motorcycles.first(where: {$0.vin == vin}) else { return cell }
                 // car found, configure the cell
                 cell.configure(price: "$\(motorcycle.price)", brand: motorcycle.brand.rawValue)

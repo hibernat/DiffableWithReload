@@ -23,7 +23,7 @@ class Car {
     static let models: [Brand: [String]] = [
         .ford: ["Expedition", "Mustang", "Explorer", "Edge", "Super Duty"],
         .volkswagen: ["Golf", "ID.3", "Passat"],
-        .tesla: ["Model X", "Model S", "Model Y"],
+        .tesla: ["Model X", "Model S", "Model Y", "Model 3"],
         .toyota: ["Camry", "Corolla", "Mirai", "RAV4"],
         .mercedesBenz: ["A-Class", "E-Class", "CLA", "CLS", "Maybach"],
     ]
