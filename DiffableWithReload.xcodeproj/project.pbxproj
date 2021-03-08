@@ -10,11 +10,13 @@
 		A021B65125F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */; };
 		A021B65325F4E48300DDA069 /* CarsAndMotorcyclesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */; };
 		A021B65525F4EAEF00DDA069 /* CellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65425F4EAEF00DDA069 /* CellViewModel.swift */; };
+		A021B65725F576F000DDA069 /* MotorcyclesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65625F576F000DDA069 /* MotorcyclesViewController.swift */; };
+		A021B65925F57E1200DDA069 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65825F57E1200DDA069 /* CollectionViewCell.swift */; };
+		A021B65B25F628E100DDA069 /* DiffableReloadingDataSourceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65A25F628E100DDA069 /* DiffableReloadingDataSourceDelegate.swift */; };
 		A069C72E25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C72D25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift */; };
 		A069C73425E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73325E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift */; };
 		A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */; };
 		A069C73825E506E9006BF686 /* CellContentObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73725E506E9006BF686 /* CellContentObject.swift */; };
-		A069C73A25E50707006BF686 /* ItemsReloadSupporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */; };
 		A0EE1F2C25DEC3710065BFDD /* HashableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */; };
 		A0EE1F2E25DEC37A0065BFDD /* EncodableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F2D25DEC37A0065BFDD /* EncodableContent.swift */; };
 		A0EE1F3C25DEC41F0065BFDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */; };
@@ -58,11 +60,13 @@
 		A021B65025F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesDataSource.swift; sourceTree = "<group>"; };
 		A021B65225F4E48300DDA069 /* CarsAndMotorcyclesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesView.swift; sourceTree = "<group>"; };
 		A021B65425F4EAEF00DDA069 /* CellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewModel.swift; sourceTree = "<group>"; };
+		A021B65625F576F000DDA069 /* MotorcyclesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotorcyclesViewController.swift; sourceTree = "<group>"; };
+		A021B65825F57E1200DDA069 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		A021B65A25F628E100DDA069 /* DiffableReloadingDataSourceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableReloadingDataSourceDelegate.swift; sourceTree = "<group>"; };
 		A069C72D25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesViewController.swift; sourceTree = "<group>"; };
 		A069C73325E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesViewModel.swift; sourceTree = "<group>"; };
 		A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffableReloadingDataSource.swift; sourceTree = "<group>"; };
 		A069C73725E506E9006BF686 /* CellContentObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellContentObject.swift; sourceTree = "<group>"; };
-		A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsReloadSupporting.swift; sourceTree = "<group>"; };
 		A0EE1F2025DEC3010065BFDD /* DiffableWithReload.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DiffableWithReload.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0EE1F2425DEC3010065BFDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashableContent.swift; sourceTree = "<group>"; };
@@ -144,9 +148,9 @@
 				A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */,
 				A0EE1F2D25DEC37A0065BFDD /* EncodableContent.swift */,
 				A069C73725E506E9006BF686 /* CellContentObject.swift */,
-				A069C73925E50707006BF686 /* ItemsReloadSupporting.swift */,
 				A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */,
 				A0FCE33725EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift */,
+				A021B65A25F628E100DDA069 /* DiffableReloadingDataSourceDelegate.swift */,
 				A0EE1F2425DEC3010065BFDD /* Info.plist */,
 			);
 			path = DiffableWithReload;
@@ -158,7 +162,7 @@
 				A0EE1F5325DEC6010065BFDD /* Models */,
 				A069C73225E46174006BF686 /* Cars (TableView) */,
 				A069C72F25E460FB006BF686 /* CarsAndMotorcycles (TableView) */,
-				A0FCE33C25EC07BE003E740D /* Cars (CollectionView) */,
+				A0FCE33C25EC07BE003E740D /* Motorcycles (CollectionView) */,
 				A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */,
 				A0EE1F3D25DEC41F0065BFDD /* SceneDelegate.swift */,
 				A0EE1F4125DEC41F0065BFDD /* Main.storyboard */,
@@ -185,11 +189,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A0FCE33C25EC07BE003E740D /* Cars (CollectionView) */ = {
+		A0FCE33C25EC07BE003E740D /* Motorcycles (CollectionView) */ = {
 			isa = PBXGroup;
 			children = (
+				A021B65625F576F000DDA069 /* MotorcyclesViewController.swift */,
+				A021B65825F57E1200DDA069 /* CollectionViewCell.swift */,
 			);
-			path = "Cars (CollectionView)";
+			path = "Motorcycles (CollectionView)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,9 +313,9 @@
 				A069C73825E506E9006BF686 /* CellContentObject.swift in Sources */,
 				A0EE1F2E25DEC37A0065BFDD /* EncodableContent.swift in Sources */,
 				A0FCE33825EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift in Sources */,
-				A069C73A25E50707006BF686 /* ItemsReloadSupporting.swift in Sources */,
 				A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */,
 				A0EE1F2C25DEC3710065BFDD /* HashableContent.swift in Sources */,
+				A021B65B25F628E100DDA069 /* DiffableReloadingDataSourceDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +325,8 @@
 			files = (
 				A021B65525F4EAEF00DDA069 /* CellViewModel.swift in Sources */,
 				A021B65125F4CE5D00DDA069 /* CarsAndMotorcyclesDataSource.swift in Sources */,
+				A021B65925F57E1200DDA069 /* CollectionViewCell.swift in Sources */,
+				A021B65725F576F000DDA069 /* MotorcyclesViewController.swift in Sources */,
 				A0EE1F5925DEC89C0065BFDD /* Motorcycle.swift in Sources */,
 				A069C73425E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift in Sources */,
 				A0EE1F5525DEC6120065BFDD /* Car.swift in Sources */,

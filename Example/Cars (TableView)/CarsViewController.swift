@@ -75,7 +75,7 @@ private extension CarsViewController {
                 guard let car = self?.cars.first(where: {$0.vin == vin}) else { return cell }
                 // car found, configure the cell
                 cell.textLabel?.text = "\(car.brand.rawValue) \(car.model) \(car.registrationPlate ?? "")"
-                cell.detailTextLabel?.text = "\(car.price)"
+                cell.detailTextLabel?.text = "$\(car.price)"
                 cell.contentView.backgroundColor = UIColor(
                     red: CGFloat(car.colorRed),
                     green: CGFloat(car.colorGreen),

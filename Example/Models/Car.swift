@@ -47,7 +47,7 @@ class Car {
         }
         self.brand = brand ?? Self.brands.randomElement()!
         model = Self.models[self.brand]!.randomElement()!
-        price = Int.random(in: 3...50) * 1000
+        price = Int.random(in: 10...50) * 1000
         colorRed = Float.random(in: 0.5 ... 1)
         colorGreen = Float.random(in: 0.5 ... 1)
         colorBlue = Float.random(in: 0.5 ... 1)

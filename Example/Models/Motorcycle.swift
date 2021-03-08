@@ -9,6 +9,8 @@ import Foundation
 
 struct Motorcycle {
     
+    static var vinCounter = 0
+    
     enum Brand: String, CaseIterable {
         case ducati = "Ducati"
         case harleyDavidson = "Harley-Davidson"
@@ -30,16 +32,21 @@ struct Motorcycle {
     var instructionManual: Data? // example of data that are not displayed in the table/collection view
     
     init(brand: Brand? = nil) {
-        vin = Int.random(in: Int.min...Int.max)  // unique identifier (for this example purposes is unique)
-        if Int.random(in: 0...7) == 0 {
+        vin = Self.vinCounter
+        Self.vinCounter += 1
+        if Int.random(in: 0..<9) == 0 {
             registrationPlate = nil // motorcycle without registration plate
         } else {
             registrationPlate = String(UUID().uuidString.prefix(6))
         }
         self.brand = brand ?? Self.brands.randomElement()!
         model = Self.models[self.brand]!.randomElement()!
-        price = Int.random(in: 3...50) * 1000
+        price = Int.random(in: 5...15) * 1000
         instructionManual = Data(base64Encoded: UUID().uuidString)
+    }
+    
+    mutating func increasePrice(by amount: Int) {
+        price += amount
     }
     
     mutating func changeRegistrationPlate() {
@@ -53,6 +60,14 @@ struct Motorcycle {
 }
 
 extension Array where Element == Motorcycle {
+    
+    mutating func increasePriceOfAllMotorcycles(brand: Motorcycle.Brand, by amount: Int) {
+        for (index, motorcycle) in self.enumerated() where motorcycle.brand == brand {
+            var updatedMotorcycle = motorcycle
+            updatedMotorcycle.increasePrice(by: amount)
+            self[index] = updatedMotorcycle
+        }
+    }
     
     mutating func changeRegistrationPlateOfAllMotorcycles(brand: Motorcycle.Brand) {
         for (index, motorcycle) in self.enumerated() where motorcycle.brand == brand {

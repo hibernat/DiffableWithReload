@@ -71,7 +71,7 @@ class CarsAndMotorcyclesViewModel {
             guard let car = car(with: vin) else { return nil }
             return CellViewModel(
                 text: "\(car.brand.rawValue) \(car.model) \(car.registrationPlate ?? "")",
-                detailText: "\(car.price)",
+                detailText: "$\(car.price)",
                 backgroundColorRed: car.colorRed,
                 backgroundColorGreen: car.colorGreen,
                 backgroundColorBlue: car.colorBlue
