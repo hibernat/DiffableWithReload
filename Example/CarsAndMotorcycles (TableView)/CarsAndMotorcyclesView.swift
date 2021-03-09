@@ -10,7 +10,11 @@ import Combine
 
 class CarsAndMotorcyclesView: UIView {
     
-    var viewModel: CarsAndMotorcyclesViewModel!
+    var viewModel: CarsAndMotorcyclesViewModel! {
+        didSet {
+            diffableDataSource.delegate = viewModel
+        }
+    }
     
     private var tableView: UITableView!
     private var diffableDataSource: CarsAndMotorcyclesDataSource!
@@ -40,12 +44,19 @@ class CarsAndMotorcyclesView: UIView {
         // initialize the diffable data source
         diffableDataSource = CarsAndMotorcyclesDataSource(tableView: tableView) { [weak self] itemIdentifier in
             // returns data uniquely identifying the cell content
+            // you do not need to call the delegate methods in this closure, because
+            // these are called automatically before and after the cellContentProvider closure (this closure) is called
             return self?.viewModel.cellViewModel(for: itemIdentifier)?.cellContentData
         } cellWithContentProvider: { [weak self] (tableView, indexPath, itemIdentifier) -> (UITableViewCell?, Data?) in
             // returns tuple of configured cell and cell content data
             let cell = tableView.dequeueReusableCell(withIdentifier: "CarAndMotorcycleCell", for: indexPath)
-            // this is the only call to viewModel for data needed to configuring the cell, will be also used for computing the cellContentData
-            guard let cellViewModel = self?.viewModel.cellViewModel(for: itemIdentifier) else { return (cell, nil) }
+            // if you use the delegate, then you are responsible for calling the delegate methods whenever you access the underlying data!
+            self?.viewModel.reloadingDataSource(tableView.dataSource as Any, willReadItemForItemIdentifier: itemIdentifier)
+            // this is the only access to viewModel data for configuring the cell, and will also be used for computing the cellContentData
+            let cellViewModel = self?.viewModel.cellViewModel(for: itemIdentifier)
+            // do not forget to call the delegate method
+            self?.viewModel.reloadingDataSource(tableView.dataSource as Any, didReadItemForItemIdentifier: itemIdentifier)
+            guard let cellViewModel = cellViewModel else { return (cell, nil) }
             // cell view model is available, configuring the cell
             cell.textLabel?.text = cellViewModel.text
             cell.detailTextLabel?.text = cellViewModel.detailText

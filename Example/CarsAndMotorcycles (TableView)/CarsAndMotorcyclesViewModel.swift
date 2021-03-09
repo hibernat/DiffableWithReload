@@ -69,6 +69,7 @@ class CarsAndMotorcyclesViewModel {
     func cellViewModel(for itemIdentifier: ItemIdentifier) -> CellViewModel? {
         switch itemIdentifier {
         case .car(let vin):
+            print("🚘 Read")
             guard let car = car(with: vin) else { return nil }
             return CellViewModel(
                 text: "\(car.brand.rawValue) \(car.model) \(car.registrationPlate ?? "")",
@@ -78,6 +79,7 @@ class CarsAndMotorcyclesViewModel {
                 backgroundColorBlue: car.colorBlue
             )
         case .motorcycle(let vin):
+            print("🛵 Read")
             guard let motorcycle = motorcycle(with: vin) else { return nil }
             return CellViewModel(
                 text: "\(motorcycle.brand.rawValue) \(motorcycle.model) \(motorcycle.registrationPlate ?? "")",
@@ -90,16 +92,19 @@ class CarsAndMotorcyclesViewModel {
     }
     
     func increasePriceOfFordCars() {
+        print("Increase price of Ford cars")
         cars.increasePriceOfAllCars(brand: .ford, by: 1)
         tableViewIdentifiers.underlyingDataChangeToggle.toggle()
     }
     
     func changeRegistrationPlatesOfDucatiMotorcycles() {
+        print("Change plates of Ducati motorcycles")
         motorcycles.changeRegistrationPlateOfAllMotorcycles(brand: .ducati)
         tableViewIdentifiers.underlyingDataChangeToggle.toggle()
     }
     
     func increasePriceChangePlatesAndMoveMotorcycle() {
+        print("All above and move motorcycle")
         cars.increasePriceOfAllCars(brand: .ford, by: 1) // tableViewIdentifiers is not changed, no value is published!
         motorcycles.changeRegistrationPlateOfAllMotorcycles(brand: .ducati) // tableViewIdentifiers is not changed, no value is published!
         let sectionFrom: SectionIdentifier
@@ -123,6 +128,7 @@ class CarsAndMotorcyclesViewModel {
     }
     
     func switchSections() {
+        print("Switch sections")
         // newTableViewIdentifiers are needed to publish all the changes at once
         var newTableViewIdentifiers = tableViewIdentifiers
         let firstSectionIdentifier = newTableViewIdentifiers.sectionIdentifiers.removeFirst()
@@ -138,10 +144,10 @@ extension CarsAndMotorcyclesViewModel: ReloadingDataSourceDelegate {
         switch itemIdentifier {
         case .car:
             // block write on cars if needed
-            break
+            print("🚘🔏 Lock")
         case .motorcycle:
             // block write on motorcycles if needed
-            break
+            print("🛵🔏 Lock")
         }
     }
     
@@ -149,10 +155,10 @@ extension CarsAndMotorcyclesViewModel: ReloadingDataSourceDelegate {
         switch itemIdentifier {
         case .car:
             // allow write on cars if needed
-            break
+            print("🚘🔓 Unlock")
         case .motorcycle:
             // allow write on motorcycles if needed
-            break
+            print("🛵🔓 Unlock")
         }
     }
     

@@ -23,7 +23,7 @@ open class CollectionViewDiffableReloadingDataSource<
     public typealias CellWithContentProvider = (UICollectionView, IndexPath, ItemIdentifierType) -> (cell: UICollectionViewCell?, cellContent: EquatableCellContent?)
     
     /// Delegate allows implementation of any locking mechanism before/after item is read
-    weak var delegate: Delegate?
+    public weak var delegate: Delegate?
     
     /// Returns the cell content value for the given item identifier.
     var cellContentProvider: CellContentProvider
