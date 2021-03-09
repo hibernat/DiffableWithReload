@@ -20,7 +20,7 @@ class MotorcyclesViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var diffableDataSource: CollectionViewDiffableReloadingDataSource<SectionIdentifier, ItemIdentifier, MotorcyclesViewController, Int>!  // Int for hashValue, just for demonstation
+    private var diffableDataSource: CollectionViewDiffableReloadingDataSource<SectionIdentifier, ItemIdentifier, MotorcyclesViewController, Int>!  // Int for hashValue, just for demonstration
     private var motorcycles: [Motorcycle]!
     
     override func viewDidLoad() {
@@ -39,20 +39,6 @@ class MotorcyclesViewController: UIViewController {
         diffableDataSource.applyWithItemsReloadIfNeeded(snapshot, animatingDifferences: true, animatingReloadItems: true)
     }
     
-//    func increasePriceChangeColorAndShuffle(_ sender: Any) {
-//        // change data in the cars array
-//        cars.increasePriceOfAllCars(brand: .ford, by: 1)
-//        cars.changeColorOfAllCars(brand: .volkswagen)
-//        // create new snapshot
-//        let snapshot = diffableDataSource.snapshot()
-//        let itemIdentifiers = snapshot.itemIdentifiers.shuffled()
-//        var newSnapshot = NSDiffableDataSourceSnapshot<SectionIdentifier, ItemIdentifier>()
-//        newSnapshot.appendSections([.sectionOne])
-//        newSnapshot.appendItems(itemIdentifiers)
-//        // items for reload are automatically created
-//        diffableDataSource.applyWithItemsReloadIfNeeded(newSnapshot, animatingDifferences: true)
-//    }
-    
 }
 
 extension MotorcyclesViewController: ReloadingDataSourceDelegate {
@@ -66,22 +52,37 @@ extension MotorcyclesViewController: ReloadingDataSourceDelegate {
 private extension MotorcyclesViewController {
     
     func initializeDataSource() {
-        diffableDataSource = CollectionViewDiffableReloadingDataSource(collectionView: collectionView) { [weak self] (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell in
+        diffableDataSource = CollectionViewDiffableReloadingDataSource(collectionView: collectionView) {
+            [weak self] (collectionView, indexPath, itemIdentifier) -> UICollectionViewCell in
             switch itemIdentifier {
             case .motorcycle(let vin):
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MotorcycleCell0", for: indexPath) as! CollectionViewCell
                 // seek for a motorcycle with the vin
-                guard let motorcycle = self?.motorcycles.first(where: {$0.vin == vin}) else { return cell }
-                // car found, configure the cell
+                guard let motorcycle = self?.motorcycles.first(where: {$0.vin == vin}) else {
+                    fatalError("Unexpected state, missing motorcycle")
+                }
+                // motorcycle found, choose cell
+                let cellReuseIdentifier: String
+                if motorcycle.price.isMultiple(of: 7) {
+                    cellReuseIdentifier = "MotorcycleCell2"
+                } else if motorcycle.price.isMultiple(of: 3) {
+                    cellReuseIdentifier = "MotorcycleCell1"
+                } else {
+                    cellReuseIdentifier = "MotorcycleCell0"
+                }
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: cellReuseIdentifier,
+                    for: indexPath
+                ) as! CollectionViewCell
+                // configure the cell
                 cell.configure(price: "$\(motorcycle.price)", brand: motorcycle.brand.rawValue)
                 return cell
             }
         } cellContentProvider: { [weak self] itemIdentifier in
             switch itemIdentifier {
             case .motorcycle(let vin):
-                // seek for a car with the vin
+                // seek for a motorcycle by the vin
                 guard let motorcycle = self?.motorcycles.first(where: { $0.vin == vin }) else { return nil }
-                // car has been found, return cell content data
+                // motorcycle has been found, return cell content data
                 // do not include keypaths to properties that are not displayed in the cell!
                 return HashableContent(of: motorcycle, using: \.brand.rawValue, \.price).hashValue
             }
@@ -89,7 +90,7 @@ private extension MotorcyclesViewController {
     }
     
     func initializeMotorcycles() {
-        motorcycles = (0...19).map { _ in Motorcycle() }
+        motorcycles = (0...1000).map { _ in Motorcycle() }
         motorcycles.insert(Motorcycle(brand: .harleyDavidson), at: 2)
         motorcycles.insert(Motorcycle(brand: .harleyDavidson), at: 4)
     }
