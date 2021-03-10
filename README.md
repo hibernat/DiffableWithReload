@@ -78,7 +78,7 @@ It is highly recommended to review the example code. There are 3 tabs in the exa
 To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'DiffableWithReload', '~> 1.0'
+pod 'DiffableWithReload', '~> 1.0.0'
 ```
 
 and in your code use `import DiffableWithReload`.
@@ -90,6 +90,6 @@ When using Xcode 11 or later, you can install `DiffableWithReload` by going to y
 
 ## Compatibility
 
-* Version `1.0` requires Swift 5
+* Version `1.0.0` requires Swift 5
 * Example project uses multiple trailing closures and requires Swift 5.3
  
