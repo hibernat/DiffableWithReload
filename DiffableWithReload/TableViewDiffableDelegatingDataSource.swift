@@ -1,8 +1,8 @@
 //
-//  TableViewDiffableReloadingDataSource.swift
+//  TableViewDiffableDelegatingDataSource.swift
 //  DiffableWithReload
 //
-//  Created by Michael Bernat on 10.03.2021.
+//  Created by Michael Bernat on 23.02.2021.
 //
 
 import UIKit
@@ -12,24 +12,19 @@ import UIKit
  When any new snapshot is applied using `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, reloadItemsAnimation:, completion:)`,
  then items requiring reload are automaticaly identified, and are added to the applying snapshot.
  */
-open class TableViewDiffableReloadingDataSource<
+open class TableViewDiffableDelegatingDataSource<
     SectionIdentifierType: Hashable,
-    ItemIdentifierType: Hashable,
+    ItemIdentifierType,
+    Delegate: ReloadingDataSourceDelegate,
     EquatableCellContent: Equatable
->: UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>, ItemsReloadSupporting {
+>: TableViewDiffableReloadingDataSource<SectionIdentifierType, ItemIdentifierType, EquatableCellContent>
+where Delegate.ItemIdentifierType == ItemIdentifierType {
     
     public typealias CellContentProvider = (ItemIdentifierType) -> EquatableCellContent?
     public typealias CellWithContentProvider = (UITableView, IndexPath, ItemIdentifierType) -> (cell: UITableViewCell?, cellContent: EquatableCellContent?)
     
-    /// Returns the cell content value for the given item identifier.
-    var cellContentProvider: CellContentProvider
-    
-    /// Maps the cells use by the table view to the content displayed in that cell.
-    /// When table view cell is deallocated, the stored content object is also released.
-    var cellContentMapTable = NSMapTable<UIView, CellContentObject<ItemIdentifierType, EquatableCellContent>>(
-        keyOptions: .weakMemory,
-        valueOptions: .strongMemory
-    )
+    /// Delegate allows implementation of any locking mechanism before/after item is read
+    public weak var delegate: Delegate?
     
     /**
      Automatically remembers (stores) the content displayed by the table view cells.
@@ -38,6 +33,8 @@ open class TableViewDiffableReloadingDataSource<
      or `.hashValue` property of `HashableContent`. If the stored content value is `nil` then method
      `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, reloadItemsAnimation:, completion:)`
      always reloads such an item identifier (table view cell).
+     
+     If delegate is set, __you have to call the delegate methods__ in `cellWithContentProvider` before and after you access the underlying data!
      
      Pros:
      - optimized for performance
@@ -54,32 +51,23 @@ open class TableViewDiffableReloadingDataSource<
      - Parameters:
         - tableView: table view used with this diffable data source
      - cellContentProvider: returns `EquatableCellContent?`. `EquatableCellContent?` represents the (visible) content of the cell and is used for resolving,
-     whether the cell needs reload or not when new snapshot is being applied.
+     whether the cell needs reload or not when new snapshot is being applied. The delegate methods are called automatically before and after this closure is executed.
      - cellWithContentProvider: returns a tuple `(UITableViewCell?, EquatableCellContent?)`.  `UITableViewCell` is
      the configured cell, `EquatableCellContent?` represents the (visible) content of the cell. When any new snapshot is applied
      using `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, reloadItemsAnimation:, completion:)`,
      then items requiring reload are identified using this stored value. (If the new cell content value varies from the stored one, the cell needs item reload.)
+     When delegate is set, do not forget to call the delegate methods before and after you access the underlying data.
      */
-    public init(
+    public override init(
         tableView: UITableView,
         cellContentProvider: @escaping CellContentProvider,
         cellWithContentProvider: @escaping CellWithContentProvider
     ) {
-        let cellProvider: (UITableView, IndexPath, ItemIdentifierType) -> UITableViewCell? = { tableView, indexPath, itemIdentifier in
-            guard let thisDataSource = tableView.dataSource as? Self<SectionIdentifierType, ItemIdentifierType, EquatableCellContent>
-            else { return nil }
-            let cellWithContent = cellWithContentProvider(tableView, indexPath, itemIdentifier)
-            guard let cell = cellWithContent.cell else { return nil }
-            // thisDataSource is a workaround for self that is not yet available during initialization
-            thisDataSource.store(
-                cellContent: cellWithContent.cellContent,
-                for: itemIdentifier,
-                in: cell
-            )
-            return cell
-        }
-        self.cellContentProvider = cellContentProvider
-        super.init(tableView: tableView, cellProvider: cellProvider)
+        super.init(
+            tableView: tableView,
+            cellContentProvider: cellContentProvider,
+            cellWithContentProvider: cellWithContentProvider
+        )
     }
     
     /**
@@ -89,6 +77,8 @@ open class TableViewDiffableReloadingDataSource<
      or `.hashValue` property of `HashableContent`. If the stored content value is `nil` then method
      `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, reloadItemsAnimation:, completion:)`
      always reloads such an item identifier (table view cell).
+     
+     If delegate is set, __you have to call the delegate methods__ in `cellProvider` before and after you access the underlying data!
      
      Pros:
      - easy to use, minimum change to the original UIKit initializer
@@ -107,12 +97,14 @@ open class TableViewDiffableReloadingDataSource<
      
      - Parameters:
         - tableView: table view used with this diffable data source
-        - cellProvider: returns the configured table view cell.
+        - cellProvider: returns the configured table view cell. When delegate is set, do not forget to call the delegate methods before and
+     after you access the underlying data.
         - cellContentProvider: returns `EquatableCellContent?` representing the (visible) content of the cell. When any new snapshot is applied
      using `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, reloadItemsAnimation:, completion:)`,
      then items requiring reload are identified using this stored value. (If the new cell content value varies from the stored one, the cell needs item reload.)
+     The delegate methods are called automatically before and after this closure is executed.
      */
-    public init(
+    public override init(
         tableView: UITableView,
         cellProvider: @escaping UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>.CellProvider,
         cellContentProvider: @escaping CellContentProvider
@@ -123,7 +115,11 @@ open class TableViewDiffableReloadingDataSource<
                 let cell = cellProvider(tableView, indexPath, itemIdentifier)
             else { return nil }
             // thisDataSource is a workaround for self that is not yet available during initialization
+
+            thisDataSource.delegate?.reloadingDataSource(thisDataSource, willReadItemForItemIdentifier: itemIdentifier)
             let cellContent = thisDataSource.cellContentProvider(itemIdentifier)
+            thisDataSource.delegate?.reloadingDataSource(thisDataSource, didReadItemForItemIdentifier: itemIdentifier)
+            
             thisDataSource.store(
                 cellContent: cellContent,
                 for: itemIdentifier,
@@ -131,73 +127,18 @@ open class TableViewDiffableReloadingDataSource<
             )
             return cell
         }
-        self.cellContentProvider = cellContentProvider
         super.init(tableView: tableView, cellProvider: customCellProvider)
-    }
-    
-    /// The original initializer, only for internal use
-    /// - Parameters:
-    ///   - tableView: tableView
-    ///   - cellProvider: cellProvider
-    override init(
-        tableView: UITableView,
-        cellProvider: @escaping UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>.CellProvider
-    ) {
-        self.cellContentProvider = { _ in return nil }
-        super.init(tableView: tableView, cellProvider: cellProvider)
-    }
-    
-    /**
-     In the first step, items (table view cells) that need reload, are identified by comparing the stored cell content and
-     the potentially new cell content based on current value in the data source.
-     The modified items  are then reloaded using `apply(_:, animatingDifferences: , completion:)`.
-     Finally, the snapshot provided in the first parameter is applied by calling `apply(_:, animatingDifferences: , completion:)`.
-     
-     Please note that the UIKit method `apply(_:, animatingDifferences: , completion:)` is called twice.
-     - first with current snapshot and `reloadItems` added
-     - then with the supplied snapshot
-     
-     - Parameters:
-        - snapshot: This shapshot should not contain any `reloadItems` as it makes no sense to do reload again.
-        - animatingDifferences: If true, defautRowAnimation is used with the supplied snapshot
-        - reloadItemsAnimation: if not nil, then this animation is used for item reload. If nil, items are reloaded with no animation.
-        - completion: completion closure
-     */
-    public func applyWithItemsReloadIfNeeded(
-        _ snapshot: NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>,
-        animatingDifferences: Bool = true,
-        reloadItemsAnimation: UITableView.RowAnimation? = nil,
-        completion: (() -> Void)? = nil
-    ) {
-        let itemIdentifiersForReload = itemIdentifiersNeedingReload(from: snapshot.itemIdentifiers)
-        if !itemIdentifiersForReload.isEmpty {
-            // there are some item identifiers that need cell reload
-            var currentSnapshotWithReloadItems = self.snapshot()
-            currentSnapshotWithReloadItems.reloadItems(itemIdentifiersForReload)
-            if let reloadItemsAnimation = reloadItemsAnimation {
-                // animated rows reloading
-                let originalRowAnimation = defaultRowAnimation
-                defaultRowAnimation = reloadItemsAnimation
-                removeCellContentObjects(for: itemIdentifiersForReload)
-                apply(currentSnapshotWithReloadItems, animatingDifferences: true)
-                defaultRowAnimation = originalRowAnimation
-            } else {
-                // no animation for reloading rows
-                removeCellContentObjects(for: itemIdentifiersForReload)
-                apply(currentSnapshotWithReloadItems, animatingDifferences: false)
-            }
-        }
-        apply(snapshot, animatingDifferences: animatingDifferences, completion: completion)
+        self.cellContentProvider = cellContentProvider
     }
     
     // required by ItemsReloadSupporting protocol
-    func willReadItem(for itemIdentifier: ItemIdentifierType) {
-    
+    override func willReadItem(for itemIdentifier: ItemIdentifierType) {
+        delegate?.reloadingDataSource(self, willReadItemForItemIdentifier: itemIdentifier)
     }
     
     // required by ItemsReloadSupporting protocol
-    func didReadItem(for itemIdentifier: ItemIdentifierType) {
-    
+    override func didReadItem(for itemIdentifier: ItemIdentifierType) {
+        delegate?.reloadingDataSource(self, didReadItemForItemIdentifier: itemIdentifier)
     }
     
 }

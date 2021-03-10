@@ -8,7 +8,7 @@
 import UIKit
 import DiffableWithReload
 
-class CarsAndMotorcyclesDataSource: TableViewDiffableReloadingDataSource<
+class CarsAndMotorcyclesDataSource: TableViewDiffableDelegatingDataSource<
     CarsAndMotorcyclesViewModel.SectionIdentifier,
     CarsAndMotorcyclesViewModel.ItemIdentifier,
     CarsAndMotorcyclesViewModel,

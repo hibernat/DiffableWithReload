@@ -20,7 +20,7 @@ class CarsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    private var diffableDataSource: TableViewDiffableReloadingDataSource<SectionIdentifier, ItemIdentifier, CarsViewController, Data>!
+    private var diffableDataSource: TableViewDiffableReloadingDataSource<SectionIdentifier, ItemIdentifier, Data>!
     private var cars: [Car]!
     
     override func viewDidLoad() {
@@ -62,14 +62,6 @@ class CarsViewController: UIViewController {
         diffableDataSource.applyWithItemsReloadIfNeeded(newSnapshot, animatingDifferences: true)
     }
     
-}
-
-extension CarsViewController: ReloadingDataSourceDelegate {
-    // there is no locking mechanism implemented, however this conformance must be set
-    // TableViewDiffableReloadingDataSource requires 4 generic types
-    
-    // this typealias is required to define generic type for ReloadingDataSourceDelegate
-    typealias ItemIdentifierType = ItemIdentifier
 }
 
 private extension CarsViewController {

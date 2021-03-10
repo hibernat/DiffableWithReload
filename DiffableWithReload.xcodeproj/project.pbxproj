@@ -16,8 +16,9 @@
 		A021B65B25F628E100DDA069 /* ReloadingDataSourceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A021B65A25F628E100DDA069 /* ReloadingDataSourceDelegate.swift */; };
 		A069C72E25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C72D25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift */; };
 		A069C73425E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73325E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift */; };
-		A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */; };
+		A069C73625E4FC1F006BF686 /* TableViewDiffableDelegatingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73525E4FC1F006BF686 /* TableViewDiffableDelegatingDataSource.swift */; };
 		A069C73825E506E9006BF686 /* CellContentObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069C73725E506E9006BF686 /* CellContentObject.swift */; };
+		A0E363CA25F9317700E47375 /* TableViewDiffableReloadingDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E363C925F9317700E47375 /* TableViewDiffableReloadingDataSource.swift */; };
 		A0EE1F2C25DEC3710065BFDD /* HashableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */; };
 		A0EE1F2E25DEC37A0065BFDD /* EncodableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F2D25DEC37A0065BFDD /* EncodableContent.swift */; };
 		A0EE1F3C25DEC41F0065BFDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EE1F3B25DEC41F0065BFDD /* AppDelegate.swift */; };
@@ -67,8 +68,9 @@
 		A021B65A25F628E100DDA069 /* ReloadingDataSourceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadingDataSourceDelegate.swift; sourceTree = "<group>"; };
 		A069C72D25E43F01006BF686 /* CarsAndMotorcyclesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesViewController.swift; sourceTree = "<group>"; };
 		A069C73325E461B4006BF686 /* CarsAndMotorcyclesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarsAndMotorcyclesViewModel.swift; sourceTree = "<group>"; };
-		A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffableReloadingDataSource.swift; sourceTree = "<group>"; };
+		A069C73525E4FC1F006BF686 /* TableViewDiffableDelegatingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffableDelegatingDataSource.swift; sourceTree = "<group>"; };
 		A069C73725E506E9006BF686 /* CellContentObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellContentObject.swift; sourceTree = "<group>"; };
+		A0E363C925F9317700E47375 /* TableViewDiffableReloadingDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffableReloadingDataSource.swift; sourceTree = "<group>"; };
 		A0EE1F2025DEC3010065BFDD /* DiffableWithReload.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DiffableWithReload.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0EE1F2425DEC3010065BFDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0EE1F2B25DEC3710065BFDD /* HashableContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashableContent.swift; sourceTree = "<group>"; };
@@ -152,7 +154,8 @@
 				A069C73725E506E9006BF686 /* CellContentObject.swift */,
 				A005BB1825F653A700836F86 /* ItemsReloadSupporting.swift */,
 				A021B65A25F628E100DDA069 /* ReloadingDataSourceDelegate.swift */,
-				A069C73525E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift */,
+				A0E363C925F9317700E47375 /* TableViewDiffableReloadingDataSource.swift */,
+				A069C73525E4FC1F006BF686 /* TableViewDiffableDelegatingDataSource.swift */,
 				A0FCE33725EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift */,
 				A0EE1F2425DEC3010065BFDD /* Info.plist */,
 			);
@@ -313,10 +316,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0E363CA25F9317700E47375 /* TableViewDiffableReloadingDataSource.swift in Sources */,
 				A069C73825E506E9006BF686 /* CellContentObject.swift in Sources */,
 				A0EE1F2E25DEC37A0065BFDD /* EncodableContent.swift in Sources */,
 				A0FCE33825EAFABD003E740D /* CollectionViewDiffableReloadingDataSource.swift in Sources */,
-				A069C73625E4FC1F006BF686 /* TableViewDiffableReloadingDataSource.swift in Sources */,
+				A069C73625E4FC1F006BF686 /* TableViewDiffableDelegatingDataSource.swift in Sources */,
 				A0EE1F2C25DEC3710065BFDD /* HashableContent.swift in Sources */,
 				A021B65B25F628E100DDA069 /* ReloadingDataSourceDelegate.swift in Sources */,
 				A005BB1925F653A700836F86 /* ItemsReloadSupporting.swift in Sources */,
