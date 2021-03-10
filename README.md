@@ -1,9 +1,9 @@
 # DiffableWithReload
-##Automated call of reloadItems(_:) for diffable datasources
+## Automated call of reloadItems(_:) for diffable datasources
 
 The new (iOS 13+) diffable datasources are great step forward making UITableView and UICollectionView much easier to use. Except one operation: item reloads.
 
-##Why
+## Why
 
 Modern app architectures store data in some kind of ViewModel or ViewStore ([The Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), [CombineFeedback](https://github.com/sergdort/CombineFeedback), and many others), while the UI just observes the data.
 
@@ -24,7 +24,7 @@ The only troubled step is the last one: **Which items have to be reloaded?**
 
 DiffableWithReload automates identification of items that require reload, so you do not need to care about reloading. Cells needing reload (and only these) are automatically reloaded (when snapshot is applied).
 
-##Classes
+## Classes
 
 DiffableWithReload subclasses [UITableViewDiffableDataSource](https://developer.apple.com/documentation/uikit/uitableviewdiffabledatasource) and [UICollectionViewDiffableDataSource](UICollectionViewDiffableDataSource) (still as generic classes) so you can use them with your data types.
 
@@ -44,7 +44,7 @@ TableViewDiffableDelegatingDataSource<SectionIdentifierType: Hashable, ItemIdent
 CollectionViewDiffableDelegatingDataSource<SectionIdentifierType: Hashable, ItemIdentifierType: Hashable, Delegate: ReloadingDataSourceDelegate, EquatableCellContent: Equatable>
 ```
 
-##Examples
+## Examples
 
 ```swift
 // change data in the cars array
@@ -61,8 +61,7 @@ It is highly recommended to review the example code. There are 3 tabs in the exa
 * Second tab (Cars and Motorcycles): Close to real-world example, with view model and Combine used for observing the changes.
 * Third tab (Motorcycles): Demonstrating use with collection view and more cell reuse identifiers.
 
-Under the hood (How it works)
--
+## Under the hood (How it works)
 
 * for each cell *used* in the table/collection view is stored the displayed content
 * displayed content is generic type `EquatableCellContent` (conforming to `Equatable`)
@@ -72,9 +71,9 @@ Under the hood (How it works)
 * `HashableContent` creating `Int` (the hash) value from the specified properties: `hashValue` is _not so unique_ identifier of the displayed content, however, may be good enough. Default choice should be `EncodableContent`.
 
 
-##Setup Instructions
+## Setup Instructions
 
-###[CocoaPods](http://cocoapods.org)
+### [CocoaPods](http://cocoapods.org)
 
 To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
@@ -84,12 +83,12 @@ pod 'DiffableWithReload', '~> 1.0'
 
 and in your code use `import DiffableWithReload`.
 
-###[Swift Package Manager](https://swift.org/package-manager/)
+### [Swift Package Manager](https://swift.org/package-manager/)
 
 When using Xcode 11 or later, you can install `DiffableWithReload` by going to your Project settings > `Swift Packages` and add the repository by providing the GitHub URL. Alternatively, you can go to `File` > `Swift Packages` > `Add Package Dependencies...`
 
 
-##Compatibility
+## Compatibility
 
 * Version `1.0` requires Swift 5
 * Example project uses multiple trailing closures and requires Swift 5.3
