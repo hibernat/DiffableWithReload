@@ -1,15 +1,34 @@
 # DiffableWithReload
-Automated reloadItems for diffable datasources
--
-iOS 13.0 introduced new diffable data source that can be used with UITableView and UICollectionView. Table/Collection view is updated by applying a snapshot containing section and items identifiers, thus easily allows insertion/removal/move of sections and items. Cell reload is also supported, however it is fully on the developer to identify the items that need reload and add these items to the snapshot that will be applied.
+##Automated call of reloadItems(_:) for diffable datasources
 
-DiffableWithReload subclasses UITableViewDiffableDataSource and UICollectionViewDiffableDataSource, and *automates identification of the items that need reload.*
+The new (iOS 13+) diffable datasources are great step forward making UITableView and UICollectionView much easier to use. Except one operation: item reloads.
 
-So, you do not need to care about items reload at all. This subclassed data source does it for you.
+##Why
 
-Classes
--
-Use these generic classes:
+Modern app architectures store data in some kind of ViewModel or ViewStore ([The Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), [CombineFeedback](https://github.com/sergdort/CombineFeedback), and many others), while the UI just observes the data.
+
+Very likely, the ViewModel/ViewStore:
+
+* stores data that should be displayed in table/collection view, often transformed or enriched (this data is usually private to the ViewModel/ViewStore)
+* there is an array of section identifiers
+* and a dictionary of item identifiers (section identifier is the key)
+
+Thanks to the diffable datasources [UITableViewDiffableDataSource](https://developer.apple.com/documentation/uikit/uitableviewdiffabledatasource) and [UICollectionViewDiffableDataSource](UICollectionViewDiffableDataSource), animated updating the table/collection view is very easy:
+
+* create new [snapshot](https://developer.apple.com/documentation/uikit/nsdiffabledatasourcesnapshot)
+* set [sectionIdentifiers](https://developer.apple.com/documentation/uikit/nsdiffabledatasourcesnapshot/3375786-sectionidentifiers)
+* set [itemIdentifiers](https://developer.apple.com/documentation/uikit/nsdiffabledatasourcesnapshot/3375774-itemidentifiers)
+* call [reloadItems(_:)](https://developer.apple.com/documentation/uikit/nsdiffabledatasourcesnapshot/3375783-reloaditems) on the snapshot
+
+The only troubled step is the last one: **Which items have to be reloaded?**
+
+DiffableWithReload automates identification of items that require reload, so you do not need to care about reloading. Cells needing reload (and only these) are automatically reloaded (when snapshot is applied).
+
+##Classes
+
+DiffableWithReload subclasses [UITableViewDiffableDataSource](https://developer.apple.com/documentation/uikit/uitableviewdiffabledatasource) and [UICollectionViewDiffableDataSource](UICollectionViewDiffableDataSource) (still as generic classes) so you can use them with your data types.
+
+For basic use, there are available:
 
 ``` swift
 TableViewDiffableReloadingDataSource<SectionIdentifierType: Hashable, ItemIdentifierType: Hashable, EquatableCellContent: Equatable>
@@ -17,56 +36,61 @@ TableViewDiffableReloadingDataSource<SectionIdentifierType: Hashable, ItemIdenti
 CollectionViewDiffableReloadingDataSource<SectionIdentifierType: Hashable, ItemIdentifierType: Hashable, EquatableCellContent: Equatable>
 ```
 
-The idea
--
-The basic idea of automated items reload generation for diffable datasources is the following:
+For advanced use, when you need (for example) data locking, there are available these subclasses:
 
-* for each cell _used_ in the table/collection view is stored the displayed content
-* when snapshot is being applied, the current (stored) cell content is compared to the current data source content, and if these are not equal, cell must be reloaded
-* the `EquatableCellContent` is the content stored for each _used_ cell in the table/collection view. It can be anything `Equatable`, but for practical reasons, there are two structs creating equatable content:
-* `EncodableContent` creating `Data?` from the specified properties - `Data?` are unique identifier of the displayed content and can be easily created from any `Encodable` property.
-* `HashableContent` creating `Int` from the specified properties (the hash value) - `hashValue` is _not so unique_ identifier of the displayed content, however, maybe is good enough, and integer storage and comparation is a bit faster than the `Data?` store and compare. Default choice should be `EncodableContent`.
+``` swift
+TableViewDiffableDelegatingDataSource<SectionIdentifierType: Hashable, ItemIdentifierType: Hashable, Delegate: ReloadingDataSourceDelegate, EquatableCellContent: Equatable>
 
-
-Basic Example
--
-```swift
-// diffable datasource providing details about various cars is initialized
-
-// change data in the cars array
-cars.changeColorOfAllCars(brand: Self.volkswagen)
-// and just apply the current snapshot
-let snapshot = diffableDataSource.snapshot()
-// items for reload are automatically created
-diffableDataSource.applyWithItemsReloadIfNeeded(snapshot, animatingDifferences: false)
+CollectionViewDiffableDelegatingDataSource<SectionIdentifierType: Hashable, ItemIdentifierType: Hashable, Delegate: ReloadingDataSourceDelegate, EquatableCellContent: Equatable>
 ```
 
-See the demo project for more examples.
-The example project uses type aliases for these two classes, and, unfortunately, quick help in Xcode does not show quick help from the original generic classes.
+##Examples
+
+```swift
+// change data in the cars array
+cars.changeColorOfAllCars(brand: .volkswagen)
+// apply the current snapshot
+let snapshot = diffableDataSource.snapshot()
+// items for reload are automatically created
+diffableDataSource.applyWithItemsReloadIfNeeded(snapshot, animatingDifferences: true)
+```
+
+It is highly recommended to review the example code. There are 3 tabs in the example iOS application:
+
+* First tab (Cars): Elementary example where you can see on 100 lines of code, how it works
+* Second tab (Cars and Motorcycles): Close to real-world example, with view model and Combine used for observing the changes.
+* Third tab (Motorcycles): Demonstrating use with collection view and more cell reuse identifiers.
+
+Under the hood (How it works)
+-
+
+* for each cell *used* in the table/collection view is stored the displayed content
+* displayed content is generic type `EquatableCellContent` (conforming to `Equatable`)
+* when snapshot is being applied, the currently displayed cell content is compared to the current data source content, and if these are not equal, cell will be reloaded
+* DiffableWithReload temporarily stores the displayed cell content (`EquatableCellContent`) for each _used_ cell in the table/collection view. Again, it can be any type conforming to `Equatable`, but there are two handy structs creating equatable content:
+* `EncodableContent` creating `Data?` value from the specified properties: `Data?` is unique identifier of the displayed content and can be easily created from any `Encodable` property of your underlaying data. The provided `data` value is an Optional, because `encode(to:)` may throw. In such a case the cell is always reloaded.
+* `HashableContent` creating `Int` (the hash) value from the specified properties: `hashValue` is _not so unique_ identifier of the displayed content, however, may be good enough. Default choice should be `EncodableContent`.
 
 
-Setup Instructions
-------------------
+##Setup Instructions
 
-[CocoaPods](http://cocoapods.org)
-------------------
+###[CocoaPods](http://cocoapods.org)
 
 To integrate Toast-Swift into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'DiffableWithReload', '~> 0.2'
+pod 'DiffableWithReload', '~> 1.0'
 ```
 
 and in your code use `import DiffableWithReload`.
 
-[Swift Package Manager](https://swift.org/package-manager/)
-------------------
+###[Swift Package Manager](https://swift.org/package-manager/)
 
 When using Xcode 11 or later, you can install `DiffableWithReload` by going to your Project settings > `Swift Packages` and add the repository by providing the GitHub URL. Alternatively, you can go to `File` > `Swift Packages` > `Add Package Dependencies...`
 
 
-Compatibility
-------------------
+##Compatibility
+
+* Version `1.0` requires Swift 5
 * Example project uses multiple trailing closures and requires Swift 5.3
-* Version `0.x.x` requires Swift 5
  
