@@ -1,8 +1,8 @@
 //
-//  CollectionViewDiffableReloadingDataSource.swift
+//  CollectionViewDiffableDelegatingDataSource.swift
 //  DiffableWithReload
 //
-//  Created by Michael Bernat on 27.02.2021.
+//  Created by Michael Bernat on 10.03.2021.
 //
 
 import UIKit
@@ -12,24 +12,19 @@ import UIKit
  When any new snapshot is applied using `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, animatingReloadItems:, completion:)`,
  then items requiring reload are automaticaly identified, and are added to the snapshot being applied.
  */
-open class CollectionViewDiffableReloadingDataSource<
+open class CollectionViewDiffableDelegatingDataSource<
     SectionIdentifierType: Hashable,
-    ItemIdentifierType: Hashable,
+    ItemIdentifierType,
+    Delegate: ReloadingDataSourceDelegate,
     EquatableCellContent: Equatable
->: UICollectionViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>, ItemsReloadSupporting {
+>: CollectionViewDiffableReloadingDataSource<SectionIdentifierType, ItemIdentifierType, EquatableCellContent>
+where Delegate.ItemIdentifierType == ItemIdentifierType {
     
     public typealias CellContentProvider = (ItemIdentifierType) -> EquatableCellContent?
     public typealias CellWithContentProvider = (UICollectionView, IndexPath, ItemIdentifierType) -> (cell: UICollectionViewCell?, cellContent: EquatableCellContent?)
     
-    /// Returns the cell content value for the given item identifier.
-    var cellContentProvider: CellContentProvider
-    
-    /// Maps the cells use by the collection view to the content displayed in that cell.
-    /// When collection view cell is deallocated, the stored content object is also released.
-    var cellContentMapTable = NSMapTable<UIView, CellContentObject<ItemIdentifierType, EquatableCellContent>>(
-        keyOptions: .weakMemory,
-        valueOptions: .strongMemory
-    )
+    /// Delegate allows implementation of any locking mechanism before/after item is read
+    public weak var delegate: Delegate?
     
     /**
      Automatically remembers (stores) the content displayed by the collection view cells.
@@ -38,6 +33,8 @@ open class CollectionViewDiffableReloadingDataSource<
      or `.hashValue` property of `HashableContent`. If the stored content value is `nil` then method
      `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, animatingReloadItems:, completion:)`
      always reloads such an item identifier (collection view cell).
+     
+     If delegate is set, __you have to call the delegate methods__ in `cellWithContentProvider` before and after you access the underlying data!
      
      Pros:
      - optimized for performance
@@ -54,32 +51,23 @@ open class CollectionViewDiffableReloadingDataSource<
      - Parameters:
         - collectionView: collection view used with this diffable data source
         - cellContentProvider: returns `EquatableCellContent?`. `EquatableCellContent?` represents the (visible) content of the cell and is used for resolving,
-     whether the cell needs reload or not when new snapshot is being applied.
+     whether the cell needs reload or not when new snapshot is being applied. The delegate methods are called automatically before and after this closure is executed.
         - cellWithContentProvider: returns a tuple `(UICollectionViewCell?, EquatableCellContent?)`.  `UICollectionViewCell` is
      the configured cell, `EquatableCellContent?` represents the (visible) content of the cell. When any new snapshot is applied
      using `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, animatingReloadItems:, completion:)`,
      then items requiring reload are identified using this stored value. (If the new cell content value varies from the stored one, the cell needs item reload.)
+     When delegate is set, do not forget to call the delegate methods before and after you access the underlying data.
      */
-    public init(
+    public override init(
         collectionView: UICollectionView,
         cellContentProvider: @escaping CellContentProvider,
         cellWithContentProvider: @escaping CellWithContentProvider
     ) {
-        let cellProvider: (UICollectionView, IndexPath, ItemIdentifierType) -> UICollectionViewCell? = { collectionView, indexPath, itemIdentifier in
-            guard let thisDataSource = collectionView.dataSource as? Self<SectionIdentifierType, ItemIdentifierType, EquatableCellContent>
-            else { return nil }
-            let cellWithContent = cellWithContentProvider(collectionView, indexPath, itemIdentifier)
-            guard let cell = cellWithContent.cell else { return nil }
-            // thisDataSource is a workaround for self that is not yet available during initialization
-            thisDataSource.store(
-                cellContent: cellWithContent.cellContent,
-                for: itemIdentifier,
-                in: cell
-            )
-            return cell
-        }
-        self.cellContentProvider = cellContentProvider
-        super.init(collectionView: collectionView, cellProvider: cellProvider)
+        super.init(
+            collectionView: collectionView,
+            cellContentProvider: cellContentProvider,
+            cellWithContentProvider: cellWithContentProvider
+        )
     }
     
     /**
@@ -89,6 +77,8 @@ open class CollectionViewDiffableReloadingDataSource<
      or `.hashValue` property of `HashableContent`. If the stored content value is `nil` then method
      `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, animatingReloadItems:, completion:)`
      always reloads such an item identifier (collection view cell).
+     
+     If delegate is set, __you have to call the delegate methods__ in `cellProvider` before and after you access the underlying data!
      
      Pros:
      - easy to use, minimum change to the original UIKit initializer
@@ -107,12 +97,14 @@ open class CollectionViewDiffableReloadingDataSource<
      
      - Parameters:
         - collectionView: collection view used with this diffable data source
-        - cellProvider: returns the configured collection view cell.
+        - cellProvider: returns the configured collection view cell. When delegate is set, do not forget to call the delegate methods before and
+     after you access the underlying data.
         - cellContentProvider: returns `EquatableCellContent?` representing the (visible) content of the cell. When any new snapshot is applied
      using `applyWithItemsReloadIfNeeded(_:, animatingDifferences:, animatingReloadItems:, completion:)`,
      then items requiring reload are identified using this stored value. (If the new cell content value varies from the stored one, the cell needs item reload.)
+     The delegate methods are called automatically before and after this closure is executed.
      */
-    public init(
+    public override init(
         collectionView: UICollectionView,
         cellProvider: @escaping UICollectionViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>.CellProvider,
         cellContentProvider: @escaping CellContentProvider
@@ -123,7 +115,11 @@ open class CollectionViewDiffableReloadingDataSource<
                 let cell = cellProvider(collectionView, indexPath, itemIdentifier)
             else { return nil }
             // thisDataSource is a workaround for self that is not yet available during initialization
+            
+            thisDataSource.delegate?.reloadingDataSource(thisDataSource, willReadItemForItemIdentifier: itemIdentifier)
             let cellContent = thisDataSource.cellContentProvider(itemIdentifier)
+            thisDataSource.delegate?.reloadingDataSource(thisDataSource, didReadItemForItemIdentifier: itemIdentifier)
+            
             thisDataSource.store(
                 cellContent: cellContent,
                 for: itemIdentifier,
@@ -131,63 +127,18 @@ open class CollectionViewDiffableReloadingDataSource<
             )
             return cell
         }
-        self.cellContentProvider = cellContentProvider
         super.init(collectionView: collectionView, cellProvider: customCellProvider)
-    }
-    
-    /// The original initializer, only for internal use
-    /// - Parameters:
-    ///   - collectionView: collectionView
-    ///   - cellProvider: cellProvider
-    override init(
-        collectionView: UICollectionView,
-        cellProvider: @escaping UICollectionViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType>.CellProvider
-    ) {
-        self.cellContentProvider = { _ in return nil }
-        super.init(collectionView: collectionView, cellProvider: cellProvider)
-    }
-    
-    /**
-     In the first step, items (collection view cells) that need reload are identified by comparing the stored cell content and
-     the potentially new cell content based on current value in the data source.
-     The modified items  are then reloaded using `apply(_:, animatingDifferences: , completion:)`.
-     Finally, the snapshot provided in the first parameter is applied by calling `apply(_:, animatingDifferences: , completion:)`.
-     
-     Please note that the UIKit method `apply(_:, animatingDifferences: , completion:)` is called twice.
-     - first with current snapshot and `reloadItems` added
-     - then with the supplied snapshot
-     
-     - Parameters:
-        - snapshot: This shapshot should not contain any `reloadItems` as it makes no sense to do reload again.
-        - animatingDifferences: If true, the supplied snapshot differences are animated.
-        - animatingReloadItems: If true, the calculated item reloads are animated.
-        - completion: completion closure
-     */
-    public func applyWithItemsReloadIfNeeded(
-        _ snapshot: NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>,
-        animatingDifferences: Bool = true,
-        animatingReloadItems: Bool = true,
-        completion: (() -> Void)? = nil
-    ) {
-        let itemIdentifiersForReload = itemIdentifiersNeedingReload(from: snapshot.itemIdentifiers)
-        if !itemIdentifiersForReload.isEmpty {
-            // there are some item identifiers that need cell reload
-            var currentSnapshotWithReloadItems = self.snapshot()
-            currentSnapshotWithReloadItems.reloadItems(itemIdentifiersForReload)
-            removeCellContentObjects(for: itemIdentifiersForReload)
-            apply(currentSnapshotWithReloadItems, animatingDifferences: animatingReloadItems)
-        }
-        apply(snapshot, animatingDifferences: animatingDifferences, completion: completion)
+        self.cellContentProvider = cellContentProvider
     }
     
     // required by ItemsReloadSupporting protocol
-    func willReadItem(for itemIdentifier: ItemIdentifierType) {
-    
+    override func willReadItem(for itemIdentifier: ItemIdentifierType) {
+        delegate?.reloadingDataSource(self, willReadItemForItemIdentifier: itemIdentifier)
     }
     
     // required by ItemsReloadSupporting protocol
-    func didReadItem(for itemIdentifier: ItemIdentifierType) {
-    
+    override func didReadItem(for itemIdentifier: ItemIdentifierType) {
+        delegate?.reloadingDataSource(self, didReadItemForItemIdentifier: itemIdentifier)
     }
     
 }
