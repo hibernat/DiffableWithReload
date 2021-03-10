@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "DiffableWithReload"
-  spec.version      = "0.2"
+  spec.version      = "1.0"
   spec.summary      = "An automated items reload for UITableView and UICollectionView when diffable data source is used. iOS 13.0+"
 
   spec.description  = <<-DESC
@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
   to the snapshot that will be applied.
 
   This pod subclasses UITableViewDiffableDataSource and UICollectionViewDiffableDataSource and automates identification of the items
-  that need reload. So, you do not need to care about items reload at all. This subclassed data source does it for you.
+  that need reload. So, you do not need to care about items reload at all.
                    DESC
 
   spec.homepage     = "https://github.com/hibernat/DiffableWithReload"
@@ -23,7 +23,7 @@ Pod::Spec.new do |spec|
   # spec.osx.deployment_target = "10.7"
   # spec.tvos.deployment_target = "9.0"
 
-  spec.swift_versions = ['5.0', '5.1', '5.2', '5.3']
+  spec.swift_version = '5.0'
 
   spec.source       = { :git => "https://github.com/hibernat/DiffableWithReload.git", :tag => spec.version }
   spec.source_files  = "DiffableWithReload/**/*.swift"
