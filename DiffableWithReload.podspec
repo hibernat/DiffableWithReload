@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "DiffableWithReload"
-  spec.version      = "1.0"
+  spec.version      = "1.0.0"
   spec.summary      = "An automated items reload for UITableView and UICollectionView when diffable data source is used. iOS 13.0+"
 
   spec.description  = <<-DESC
