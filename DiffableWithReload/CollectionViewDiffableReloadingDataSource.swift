@@ -173,7 +173,9 @@ open class CollectionViewDiffableReloadingDataSource<
         if !itemIdentifiersForReload.isEmpty {
             // there are some item identifiers that need cell reload
             var currentSnapshotWithReloadItems = self.snapshot()
-            currentSnapshotWithReloadItems.reloadItems(itemIdentifiersForReload)
+            let currentItemIdentifiersSet = Set(currentSnapshotWithReloadItems.itemIdentifiers)
+            let refinedItemIdentifiersForReload = itemIdentifiersForReload.filter { currentItemIdentifiersSet.contains($0) }
+            currentSnapshotWithReloadItems.reloadItems(refinedItemIdentifiersForReload)
             removeCellContentObjects(for: itemIdentifiersForReload)
             apply(currentSnapshotWithReloadItems, animatingDifferences: animatingReloadItems)
         }
