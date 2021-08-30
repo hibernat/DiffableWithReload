@@ -111,7 +111,7 @@ where Delegate.ItemIdentifierType == ItemIdentifierType {
     ) {
         let customCellProvider = { (tableView: UITableView, indexPath: IndexPath, itemIdentifier: ItemIdentifierType) -> UITableViewCell? in
             guard
-                let thisDataSource = tableView.dataSource as? Self<SectionIdentifierType, ItemIdentifierType, EquatableCellContent>,
+                let thisDataSource = tableView.dataSource as? Self,
                 let cell = cellProvider(tableView, indexPath, itemIdentifier)
             else { return nil }
             // thisDataSource is a workaround for self that is not yet available during initialization
